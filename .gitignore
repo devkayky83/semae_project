@@ -1,0 +1,9 @@
+# Ignore virtual environment directories
+venv/
+
+# Ignore Python virtual environment
+__pycache__/
+*.pyc
+
+# Ignore Local database
+db.slite3
