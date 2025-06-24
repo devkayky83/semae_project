@@ -3,8 +3,14 @@ from django.db import models
 class Produto(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100)
-    quantidade = models.IntegerField()
-    tipo = models.CharField(max_length=50)
+    PRODUTO_TIPO = (
+          ('ALIMENTO', 'Alimento'),
+            ('LIMPEZA', 'Limpeza'),
+            ('ESCOLAR', 'Escolar'),
+            ('OUTROS', 'Outros'),   
+    )
+    tipo = models.CharField(max_length=50, choices=PRODUTO_TIPO, default='OUTROS')
+    quantidade = models.PositiveIntegerField()
     data_fabricacao = models.DateField()
     data_validade = models.DateField()
     observacoes = models.TextField(blank=True, null=True)
