@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+    <title>Lista de Produtos</title>
+</head>
+<body>
+    <h1>Produtos no Estoque</h1>
+    <a href="{% url 'cadastrar_produto' %}">Novo Produto</a>
+    <ul>
+        {% for produto in produtos %}
+        <li>
+            {{ produto.nome}} ({{ produto.tipo}}) - {{produto.quantidade}} unidades
+        </li>
+        {% empty %}
+        <li>Nenhum produto cadastrado.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
