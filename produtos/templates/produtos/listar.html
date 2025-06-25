@@ -9,6 +9,7 @@
         {% for produto in produtos %}
         <li>
             {{ produto.nome}} ({{ produto.tipo}}) - {{produto.quantidade}} unidades
+            <a href="{% url 'editar_produto' produto.id %}">Editar</a>
         </li>
         {% empty %}
         <li>Nenhum produto cadastrado.</li>
