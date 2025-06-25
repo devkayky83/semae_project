@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Produto
+from .forms import ProdutoForm
 
 # Create your views here.
 
@@ -9,22 +10,30 @@ def listar_produtos(request):
 
 def cadastrar_produto(request):
     if request.method == 'POST':
-        nome = request.POST['nome']
-        tipo = request.POST['tipo']
-        quantidade = int(request.POST['quantidade'])
-        data_fabricacao = request.POST['data_fabricacao']
-        data_validade = request.POST['data_validade']
-        observacoes = request.POST.get('observacoes', '')
-        
-        Produto.objects.create(
-            nome=nome,
-            tipo=tipo,
-            quantidade=quantidade,
-            data_fabricacao=data_fabricacao,
-            data_validade=data_validade,
-            observacoes=observacoes
-        )
-        
-        return redirect('listar_produtos')
+        form = ProdutoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_produtos')
+    else:
+        form = ProdutoForm()
     
-    return render(request, 'produtos/cadastrar.html')
+    return render(request, 'produtos/cadastrar.html', {'form': form})
+
+def editar_produto(request, id):
+    produto = get_object_or_404(Produto, pk=id)
+    
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST, instance=produto)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_produtos')
+    else:
+        form = ProdutoForm(instance=produto)
+        
+    return render(request, 'produtos/cadastrar.html', {
+        'form': form,
+        'editar': True, 
+        'produto': produto,
+    })
+    
+        
