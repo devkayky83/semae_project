@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Baixa de Estoque</title>
+</head>
+
+<body>
+    <h1>Dar Baixa no Estoque</h1>
+    <p>Produto: <strong>{{ produto.nome }}</strong></p>
+    <p>Quantidade Atual: <strong>{{ produto.quantidade }}</strong></p>
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Quantidade a remover:</label>
+        <input type="number" name="quantidade" min="1" required>
+        <button type="submit">Confirmar</button>
+    </form>
+    <a href="{% url 'listar_produtos' %}">Voltar</a>
+</body>
+
+</html>
