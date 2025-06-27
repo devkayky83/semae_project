@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from django.template.loader import get_template
 from .models import Produto
 from .forms import ProdutoForm
+from xhtml2pdf import pisa
+
+import openpyxl
 
 # Create your views here.
 
@@ -87,5 +92,38 @@ def baixar_estoque(request, id):
         })
     
     return render(request, 'produtos/baixar_estoque.html', {'produto': produto})
+
+
+def exportar_excel(request):
+    book = openpyxl.Workbook()
+    activation = book.active
+    activation.title = 'Produtos'
     
+    activation.append(['Nome', 'Tipo', 'Quantidade', 'Fabricação', 'Validade', 'observações'])
+    
+    for produto in Produto.objects.all():
+        activation.append([
+            produto.nome,
+            produto.tipo, 
+            produto.quantidade,
+            produto.data_fabricacao.strftime('%d/%m/%Y'),
+            produto.data_validade.strftime('%d/%m/%Y'),
+            produto.observacoes or ''
+        ])
         
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=produtos.xlsx'
+    activation.save(response)
+    return response
+
+
+def exportar_pdf(request):
+    produtos = Produto.objects.all()
+    template = get_template('produtos/relatorio_pdf.html')
+    html = template.render({'produtos': produtos})
+    
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=relatorio_produtos.pdf'
+    
+    pisa.CreatePDF(html, dest=response)
+    return response

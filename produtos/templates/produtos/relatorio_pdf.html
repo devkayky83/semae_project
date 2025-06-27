@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <title>Relatório de Produtos</title>
+</head>
+<body>
+    <h1>Relatório de Produtos</h1>
+    <table border="1" cellspacing="0" cellpading="5">
+        <tr>
+            <th>Nome</th><th>Tipo</th><th>Qtd</th><th>D.Fabricação</th><th>D.Validade</th><th>Obs</th>
+        </tr>
+        {% for p in produtos%}
+        <tr>
+            <td>{{ p.nome }}</td>
+            <td>{{ p.tipo }}</td>
+            <td>{{ p.quantidade }}</td>
+            <td>{{ p.data_fabricacao }}</td>
+            <td>{{ p.data_validade }}</td>
+            <td>{{ p.observacoes|default:'-' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
