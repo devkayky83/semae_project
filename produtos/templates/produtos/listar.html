@@ -5,6 +5,13 @@
 <body>
     <h1>Produtos no Estoque</h1>
 
+    <ul>
+        <li>
+            <a href="{% url 'exportar_excel' %}">Exportar Excel</a>
+            <a href="{% url 'exportar_pdf' %}">Exportar PDF</a>
+        </li>
+    </ul>
+
     <form method="get">
         <input type="text" name="buscar" placeholder="Buscar por nome" value="{{ busca }}"> 
 
@@ -22,7 +29,7 @@
         </select>
         
         <button type="submit">Filtrar</button>
-    </form>
+    </form><br>
 
     <a href="{% url 'cadastrar_produto' %}">Novo Produto</a>
     <ul>
