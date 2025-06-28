@@ -113,7 +113,7 @@ def exportar_excel(request):
         
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=produtos.xlsx'
-    activation.save(response)
+    book.save(response)
     return response
 
 
