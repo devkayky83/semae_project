@@ -6,6 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from .forms import UsuarioCadastroForm, UsuarioLoginForm
 from django.conf import settings
 from .models import Usuario
+from .forms import UsuarioForm
 
 # Verifica se o usuário é secretário (para controle de acesso)
 def is_secretario(user):
@@ -57,3 +58,35 @@ def logout_view(request: HttpRequest) -> HttpResponse:
 
 class CustomLoginView(LoginView):
     template_name = 'usuarios/login.html'
+
+
+@login_required
+@user_passes_test(is_secretario)
+def editar_usuario(request, id):
+    usuario = get_object_or_404(Usuario, pk=id)
+
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save() 
+            return redirect('lista_usuarios')
+    else:
+        form = UsuarioForm(instance=usuario)
+
+    return render(request, 'usuarios/editar.html', {
+        'form': form,
+        'usuario': usuario,
+    })
+
+@login_required
+@user_passes_test(is_secretario)
+def excluir_usuario(request, id):
+    # Busca o usuário pelo ID ou retorna um erro 404
+    usuario = get_object_or_404(Usuario, pk=id)
+
+    if request.method == 'POST':
+        usuario.delete()
+        # Redireciona para a lista de usuários
+        return redirect('lista_usuarios')
+
+    return render(request, 'usuarios/excluir.html', {'usuario': usuario})

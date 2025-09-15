@@ -5,7 +5,6 @@
         <li>
             {{ u.username }} ({{ u.cargo }})
             <a href="{% url 'editar_usuario' u.id %}">Editar</a>
-            <a href="{% url 'deletar_usuario' u.id %}">Deletar</a>
-        </li>
+            <a href="{% url 'excluir_usuario' u.id %}">Excluir</a>  </li>
     {% endfor %}
 </ul>

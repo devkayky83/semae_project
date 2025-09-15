@@ -10,3 +10,16 @@ class UsuarioCadastroForm(UserCreationForm):
         
 class UsuarioLoginForm(AuthenticationForm):
         pass
+
+class UsuarioForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        # CORREÇÃO: Usando os nomes de campo REAIS do modelo Django ('first_name', 'last_name')
+        fields = ['username', 'email', 'cargo']
+
+        labels = {
+            'username': 'Nome de Usuário',
+            'email': 'E-mail',
+            'cargo': 'Cargo',
+
+        }
