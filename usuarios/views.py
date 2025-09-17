@@ -10,7 +10,15 @@ from .forms import UsuarioForm
 
 # Verifica se o usuário é secretário (para controle de acesso)
 def is_secretario(user):
-    return user.is_secretario()
+    return user.is_secretario() and user.cargo == "SECRETARIO"
+
+# Verifica se o usuário é nutricionista (para controle de acesso)
+def is_nutricionista(user):
+    return user.is_nutricionista() and user.cargo == "NUTRICIONISTA"
+
+# Verifica se o usuário é secretário ou nutricionista (para controle de acesso)
+def is_secretario_or_nutricionista(user):
+    return user.is_authenticated and (user.cargo == 'SECRETARIO' or user.cargo == 'NUTRICIONISTA')
 
 # Apenas secretário pode ver a lista de usuários
 @login_required
@@ -64,7 +72,6 @@ class CustomLoginView(LoginView):
 @user_passes_test(is_secretario)
 def editar_usuario(request, id):
     usuario = get_object_or_404(Usuario, pk=id)
-
     if request.method == 'POST':
         form = UsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
@@ -83,10 +90,18 @@ def editar_usuario(request, id):
 def excluir_usuario(request, id):
     # Busca o usuário pelo ID ou retorna um erro 404
     usuario = get_object_or_404(Usuario, pk=id)
-
     if request.method == 'POST':
         usuario.delete()
         # Redireciona para a lista de usuários
         return redirect('lista_usuarios')
 
     return render(request, 'usuarios/excluir.html', {'usuario': usuario})
+
+
+def menu_principal(request: HttpRequest) -> HttpResponse:
+    if request.user.cargo == 'SECRETARIO':
+        return render(request, 'usuarios/menu_secretario.html')
+    elif request.user.cargo == 'NUTRICIONISTA':
+        return render(request, 'usuarios/menu_nutricionista.html')
+    else:
+        return redirect('logout_usuario')

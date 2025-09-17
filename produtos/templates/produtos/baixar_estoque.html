@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-
 <head>
     <title>Baixa de Estoque</title>
 </head>
-
 <body>
     <h1>Dar Baixa no Estoque</h1>
-    <p>Produto: <strong>{{ produto.nome }}</strong></p>
-    <p>Quantidade Atual: <strong>{{ produto.quantidade }}</strong></p>
+    <p>Produto: <strong>{{ lote.tipo_produto.nome }}</strong></p>
+    <p>Quantidade Atual do Lote: <strong>{{ lote.quantidade }}</strong></p>
 
     {% if error %}
     <p style="color: red;">{{ error }}</p>
@@ -19,7 +17,6 @@
         <input type="number" name="quantidade" min="1" required>
         <button type="submit">Confirmar</button>
     </form>
-    <a href="{% url 'listar_produtos' %}">Voltar</a>
+    <a href="{% url 'listar_lotes' lote.tipo_produto.id %}">Voltar</a>
 </body>
-
 </html>

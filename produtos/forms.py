@@ -1,7 +1,14 @@
 from django import forms
-from .models import Produto
+from .models import TipoProduto, Lote
 
-class ProdutoForm(forms.ModelForm):
+class TipoProdutoForm(forms.ModelForm):
     class Meta:
-        model = Produto
-        fields = "__all__"
+        model = TipoProduto
+        fields = '__all__'
+        
+class Loteform(forms.ModelForm):
+    class Meta:
+        model = Lote
+        fields = ['quantidade', 'data_fabricacao', 'data_validade', 'observacoes']
+        
+

@@ -21,5 +21,4 @@ class UsuarioForm(forms.ModelForm):
             'username': 'Nome de Usuário',
             'email': 'E-mail',
             'cargo': 'Cargo',
-
         }

@@ -32,7 +32,7 @@ AUTH_USER_MODEL = 'usuarios.Usuario'
 
 # Redirect URLs
 LOGIN_URL = '/usuarios/login/'
-LOGIN_REDIRECT_URL = '/usuarios/'
+LOGIN_REDIRECT_URL = '/usuarios/menu/'
 LOGOUT_REDIRECT_URL = '/usuarios/login/'
 
 

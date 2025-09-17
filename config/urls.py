@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
-from usuarios import views
+from usuarios.views import CustomLoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', CustomLoginView.as_view(), name='root_login'),
     path('produtos/', include('produtos.urls')),
-    path('', lambda request: redirect('/produtos/')),
     path('usuarios/', include('usuarios.urls')),
 ]

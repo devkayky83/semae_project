@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+    <title>Lotes de {{ tipo_produto.nome }}</title>
+</head>
+<body>
+    <h1>Lotes de {{ tipo_produto.nome }}</h1>
+    <p>Tipo: {{ tipo_produto.tipo }}</p>
+
+    <a href="{% url 'listar_tipos_produto' %}">Voltar para a Lista de Produtos</a> |
+    <a href="{% url 'cadastrar_lote' tipo_produto.id %}">Adicionar Novo Lote</a>
+
+    <ul>
+        {% for lote in lotes %}
+        <li>
+            Lote: {{ lote.id }} - Qtd: {{ lote.quantidade }} - Válido até: {{ lote.data_validade }}
+            <a href="{% url 'baixar_estoque' lote.id %}">Dar Baixa</a>
+            <a href="{% url 'editar_lote' lote.id %}">Editar</a>
+            <a href="{% url 'excluir_lote' lote.id %}">Excluir</a>
+        </li>
+        {% empty %}
+        <li>Nenhum lote cadastrado para este produto.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

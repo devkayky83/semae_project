@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <title>Confirmar Exclusão de Lote</title>
+</head>
+<body>
+    <h1>Confirmar Exclusão de Lote</h1>
+    <p>Você tem certeza que deseja excluir o seguinte lote?</p>
+    
+    <ul>
+        <li><strong>Produto:</strong> {{ lote.tipo_produto.nome }}</li>
+        <li><strong>Quantidade:</strong> {{ lote.quantidade }}</li>
+        <li><strong>Válido até:</strong> {{ lote.data_validade }}</li>
+    </ul>
+
+    <p>Esta ação não pode ser desfeita.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir lote</button>
+        <a href="{% url 'listar_lotes' lote.tipo_produto.id %}">Cancelar</a>
+    </form>
+</body>
+</html>

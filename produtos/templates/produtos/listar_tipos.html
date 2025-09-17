@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <head>
-    <title>Lista de Produtos</title>
+    <title>Tipos de Produtos</title>
 </head>
 <body>
     <h1>Produtos no Estoque</h1>
 
-    <ul>
-        <li>
-            <a href="{% url 'exportar_excel' %}">Exportar Excel</a>
-            <a href="{% url 'exportar_pdf' %}">Exportar PDF</a>
-        </li>
-    </ul>
+    <a href="{% url 'menu_principal' %}">Voltar para o Menu</a> |
+    <a href="{% url 'cadastrar_tipo_produto' %}">Novo Produto</a>
 
     <form method="get">
         <input type="text" name="buscar" placeholder="Buscar por nome" value="{{ busca }}"> 
@@ -25,24 +21,23 @@
         <select name="ordem">
             <option value="">-- Ordenar por --</option>
             <option value="nome" {% if ordem == "nome" %}selected{% endif %}>Nome (A-Z)</option>
-            <option value="quantidade" {% if ordem == "quantidade" %}selected{% endif %}>Quantidade</option>
         </select>
         
         <button type="submit">Filtrar</button>
-    </form><br>
+    </form>
 
-    <a href="{% url 'cadastrar_produto' %}">Novo Produto</a>
     <ul>
-        {% for produto in produtos %}
+        {% for tipo_produto in tipos_produto %}
         <li>
-            {{ produto.nome}} ({{ produto.tipo}}) - {{produto.quantidade}} unidades
-            <a href="{% url 'editar_produto' produto.id %}">Editar</a>
-            <a href="{% url 'excluir_produto' produto.id %}">Excluir</a>
-            <a href="{% url 'baixar_estoque' produto.id %}">Dar Baixa</a>
+            {{ tipo_produto.nome }} ({{ tipo_produto.tipo }}) - 
+            <a href="{% url 'listar_lotes' tipo_produto.id %}">Ver Lotes</a>
+            <a href="{% url 'editar_tipo_produto' tipo_produto.id %}">Editar</a>
+            <a href="{% url 'excluir_tipo_produto' tipo_produto.id %}">Excluir</a>
         </li>
         {% empty %}
-        <li>Nenhum produto cadastrado.</li>
+        <li>Nenhum tipo de produto cadastrado.</li>
         {% endfor %}
     </ul>
+
 </body>
 </html>

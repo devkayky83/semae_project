@@ -1,0 +1,6 @@
+<h1>Menu da Nutricionista</h1>
+<p>Olá, {{ request.user.username }}</p>
+<ul>
+    <li><a href="{% url 'listar_tipos_produto' %}">Gerenciar Estoque</a></li>
+</ul>
+<a href="{% url 'logout_usuario' %}">Sair</a>

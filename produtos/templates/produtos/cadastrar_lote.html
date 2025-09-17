@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<head>
+    <title>Adicionar Lote a {{ tipo_produto.nome }}</title>
+</head>
+<body>
+    <h1>Adicionar Novo Lote</h1>
+    <p>Produto: <strong>{{ tipo_produto.nome }}</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">
+            {% if editar %}Salvar Alterações{% else %}Adicionar Lote{% endif %}
+        </button>
+    </form>
+    
+    <a href="{% url 'listar_lotes' tipo_produto.id %}">Cancelar e Voltar para os Lotes</a>
+</body>
+</html>

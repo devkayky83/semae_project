@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+    <title>Confirmar Exclusão de Tipo de Produto</title>
+</head>
+<body>
+    <h1>Confirmar Exclusão</h1>
+    <p>Tem certeza que deseja excluir o tipo de produto <strong>{{ tipo_produto.nome }}</strong>?</p>
+    <p><strong>Esta ação também removerá todos os lotes associados a este produto e não pode ser desfeita.</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+        <a href="{% url 'listar_tipos_produto' %}">Cancelar</a>
+    </form>
+</body>
+</html>
