@@ -8,6 +8,24 @@ from django.conf import settings
 from .models import Usuario
 from .forms import UsuarioForm
 
+@login_required
+@user_passes_test(lambda u: u.is_secretario())
+def menu_secretario(request):
+    # Corrigido para apontar para o seu template
+    return render(request, 'usuarios/menu_secretario.html')
+
+@login_required
+@user_passes_test(lambda u: u.is_diretor())
+def menu_diretor(request):
+    # Corrigido para apontar para o seu template
+    return render(request, 'usuarios/menu_diretor.html')
+
+@login_required
+@user_passes_test(lambda u: u.is_nutricionista())
+def menu_nutricionista(request):
+    # Corrigido para apontar para o seu template
+    return render(request, 'usuarios/menu_nutricionista.html')
+
 # Verifica se o usuário é secretário (para controle de acesso)
 def is_secretario(user):
     return user.is_secretario() and user.cargo == "SECRETARIO"
@@ -64,14 +82,35 @@ def logout_view(request: HttpRequest) -> HttpResponse:
     return redirect(settings.LOGOUT_REDIRECT_URL) # Redireciona para a página de login após o logout
 
 
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy # Importe o reverse_lazy
+
 class CustomLoginView(LoginView):
     template_name = 'usuarios/login.html'
+
+    def get_success_url(self):
+        user = self.request.user
+
+        if user.is_secretario():
+            # Corrigido para o novo nome da URL
+            return reverse_lazy('menu_secretario')
+        
+        elif user.is_diretor():
+            # Corrigido para o novo nome da URL
+            return reverse_lazy('menu_diretor')
+
+        elif user.is_nutricionista():
+            # Corrigido para o novo nome da URL
+            return reverse_lazy('menu_nutricionista')
+        
+        else:
+            return reverse_lazy('login')
 
 
 @login_required
 @user_passes_test(is_secretario)
-def editar_usuario(request, id):
-    usuario = get_object_or_404(Usuario, pk=id)
+def editar_usuario(request, pk):
+    usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
         form = UsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
@@ -87,9 +126,9 @@ def editar_usuario(request, id):
 
 @login_required
 @user_passes_test(is_secretario)
-def excluir_usuario(request, id):
+def excluir_usuario(request, pk):
     # Busca o usuário pelo ID ou retorna um erro 404
-    usuario = get_object_or_404(Usuario, pk=id)
+    usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
         usuario.delete()
         # Redireciona para a lista de usuários

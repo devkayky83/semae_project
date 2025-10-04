@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Pedidos</title>
+    <style>
+        /* --- Estilos Gerais --- */
+        body {
+            font-family: sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            vertical-align: middle; /* Alinha o conteúdo dos botões e texto */
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* --- Estilos para Mensagens do Django --- */
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin: 1em 0;
+        }
+        .messages li {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .messages li.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .messages li.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* --- Estilo Unificado para Botões --- */
+        .btn {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 14px;
+            font-weight: normal;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            
+            /* Para os links não terem sublinhado e terem cor preta */
+            color: black !important;
+            text-decoration: none !important;
+        }
+
+        .btn:hover {
+            background-color: #e0e0e0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Meus Pedidos de Solicitação</h1>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>Acompanhe aqui o status de todos os seus pedidos.</p>
+        
+        <a href="{% url 'criar_pedido' %}" class="btn">Fazer Nova Solicitação</a>
+        <hr style="margin: 1em 0;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nº do Pedido</th>
+                    <th>Data da Solicitação</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>#{{ pedido.id }}</td>
+                    <td>{{ pedido.data_pedido|date:"d/m/Y H:i" }}</td>
+                    <td>{{ pedido.get_status_display }}</td>
+                    <td>
+                        <a href="{% url 'detalhe_pedido' pedido.id %}" class="btn">Ver / Editar</a>
+                        
+                        {% if pedido.status == 'PENDENTE' %}
+                            <form method="post" action="{% url 'excluir_pedido' pedido.id %}" style="display: inline; margin-left: 5px;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn" onclick="return confirm('Tem certeza que deseja excluir o pedido #{{ pedido.id }}?');">
+                                    Excluir
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Você ainda não fez nenhum pedido.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <a href="{% url 'menu_diretor' %}">Voltar ao Menu</a>
+    </div>
+</body>
+</html>

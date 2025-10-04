@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Estoque Disponível</title>
+    <style>
+        body { font-family: sans-serif; }
+        .container { width: 80%; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .disponivel { color: green; font-weight: bold; }
+        .indisponivel { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Estoque Disponível para Solicitação</h1>
+        <p>Aqui está a lista de todos os tipos de produto e suas quantidades totais em estoque (soma de todos os lotes).</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Tipo</th>
+                    <th>Estoque Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.get_tipo_display }}</td>
+                    <td>{{ produto.estoque_total|default:"0" }}</td>
+                    <td>
+                        {% if produto.estoque_total > 0 %}
+                            <span class="disponivel">Disponível</span>
+                        {% else %}
+                            <span class="indisponivel">Indisponível</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Nenhum tipo de produto cadastrado no momento.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <br>
+        <a href="{% url 'menu_diretor' %}">Voltar ao Menu</a>
+    </div>
+</body>
+</html>

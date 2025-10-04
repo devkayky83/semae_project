@@ -1,5 +1,6 @@
 from django import forms
 from .models import TipoProduto, Lote
+from .models import ItemPedido
 
 class TipoProdutoForm(forms.ModelForm):
     class Meta:
@@ -11,4 +12,7 @@ class Loteform(forms.ModelForm):
         model = Lote
         fields = ['quantidade', 'data_fabricacao', 'data_validade', 'observacoes']
         
-
+class ItemPedidoForm(forms.ModelForm):
+    class Meta:
+        model = ItemPedido
+        fields = ['produto', 'quantidade']

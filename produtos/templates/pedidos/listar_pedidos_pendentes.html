@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedidos Pendentes</title>
+    </head>
+<body>
+    <h1>Pedidos Pendentes de Análise</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nº do Pedido</th>
+                <th>Solicitante</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>#{{ pedido.id }}</td>
+                <td>{{ pedido.solicitante.username }}</td>
+                <td>{{ pedido.data_pedido|date:"d/m/Y H:i" }}</td>
+                <td>
+                    <a href="{% url 'detalhe_pedido_nutricionista' pedido.id %}">Analisar Pedido</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Nenhum pedido pendente no momento.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{% url 'menu_nutricionista' %}">Voltar ao Menu</a>
+</body>
+</html>
