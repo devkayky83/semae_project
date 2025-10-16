@@ -1,56 +1,52 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Estoque Disponível</title>
-    <style>
-        body { font-family: sans-serif; }
-        .container { width: 80%; margin: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .disponivel { color: green; font-weight: bold; }
-        .indisponivel { color: red; font-weight: bold; }
-    </style>
+    <title>Estoque Disponível | Diretor</title>
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/estoque_diretor.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/pedidos.css'%}">
 </head>
 <body>
-    <div class="container">
+    <div class="container-principal">
         <h1>Estoque Disponível para Solicitação</h1>
         <p>Aqui está a lista de todos os tipos de produto e suas quantidades totais em estoque (soma de todos os lotes).</p>
 
-        <table>
+        <table class="tabela-pedidos">
             <thead>
                 <tr>
                     <th>Produto</th>
-                    <th>Tipo</th>
-                    <th>Estoque Total</th>
-                    <th>Status</th>
+                    <th class="col-tipo">Tipo</th>
+                    <th class="col-estoque-total">Estoque Total</th>
+                    <th class="col-status-solicitacao">Status</th>
                 </tr>
             </thead>
             <tbody>
                 {% for produto in produtos %}
                 <tr>
-                    <td>{{ produto.nome }}</td>
-                    <td>{{ produto.get_tipo_display }}</td>
-                    <td>{{ produto.estoque_total|default:"0" }}</td>
-                    <td>
-                        {% if produto.estoque_total > 0 %}
-                            <span class="disponivel">Disponível</span>
+                    <td class="col-produto">{{ produto.nome }}</td>
+                    <td class="col-tipo">{{ produto.get_tipo_display }}</td>
+                    <td class="col-estoque-total">{{ produto.total_estoque|default:"0" }}</td>
+                    <td class="col-status-solicitacao">
+                        {% if produto.total_estoque > 0 %}
+                            <span class="status-disponivel">Disponível</span>
                         {% else %}
-                            <span class="indisponivel">Indisponível</span>
+                            <span class="status-indisponivel">Indisponível</span>
                         {% endif %}
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4">Nenhum tipo de produto cadastrado no momento.</td>
+                    <td colspan="4" class="tabela-vazia">Nenhum tipo de produto cadastrado no momento.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         
-        <br>
-        <a href="{% url 'menu_diretor' %}">Voltar ao Menu</a>
+        <div class="rodape-link">
+            <a href="{% url 'menu_diretor' %}" class="link-voltar">Voltar ao Menu</a>
+        </div>
     </div>
 </body>
 </html>

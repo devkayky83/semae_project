@@ -1,27 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Histórico de Pedidos</title>
-    <style>
-        body { font-family: sans-serif; }
-        .container { width: 80%; margin: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
-        th, td { border: 1px solid #ddd; padding: 8px; }
-        th { background-color: #f2f2f2; }
-        .status-aprovado { color: green; font-weight: bold; }
-        .status-rejeitado { color: red; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="{% static 'produtos/pedidos.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/historico_pedidos.css' %}">
 </head>
 <body>
     <div class="container">
         <h1>Histórico de Pedidos Recentes</h1>
         <p>Abaixo estão os últimos 20 pedidos processados.</p>
 
-        <table>
+        <table class="tabela-pedidos">
             <thead>
                 <tr>
-                    <th>Nº do Pedido</th>
+                    <th>Nº do Pedido</th> 
                     <th>Solicitante</th>
                     <th>Data da Solicitação</th>
                     <th>Status</th>
@@ -30,27 +24,28 @@
             <tbody>
                 {% for pedido in pedidos %}
                 <tr>
-                    <td>#{{ pedido.id }}</td>
-                    <td>{{ pedido.solicitante.username }}</td>
-                    <td>{{ pedido.data_pedido|date:"d/m/Y H:i" }}</td>
-                    <td>
+                    <td class="pedido-id">#{{ pedido.id }}</td>
+                    <td class="pedido-solicitante">{{ pedido.solicitante.username }}</td>
+                    <td class="pedido-data">{{ pedido.data_pedido|date:"d/m/Y H:i" }}</td>
+                    <td class="pedido-status">
                         {% if pedido.status == 'APROVADO' %}
-                            <span class="status-aprovado">{{ pedido.get_status_display }}</span>
+                            <span class="status-tag status-aprovado">{{ pedido.get_status_display }}</span>
                         {% else %}
-                            <span class="status-rejeitado">{{ pedido.get_status_display }}</span>
+                            <span class="status-tag status-rejeitado">{{ pedido.get_status_display }}</span>
                         {% endif %}
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4">Nenhum pedido foi processado recentemente.</td>
+                    <td colspan="4" class="tabela-vazia">Nenhum pedido foi processado recentemente.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <br>
-        <a href="{% url 'menu_nutricionista' %}">Voltar ao Menu</a>
+        <div class="rodape-link">
+            <a href="{% url 'menu_nutricionista' %}" class="link-voltar">Voltar ao Menu</a>
+        </div>
     </div>
 </body>
 </html>

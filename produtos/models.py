@@ -15,14 +15,51 @@ class TipoProduto(models.Model):
         ('OUTROS', 'Outros'),
     )
     tipo = models.CharField(max_length=50, choices=PRODUTO_TIPO, default='OUTROS')
+    
+    ORIGEM_COMPRA_CHOICES = (
+        ('COMUM', 'Compra Comum'),
+        ('AGRICULTURA', 'Agricultura Familiar'),
+    )
+    
+    origem_compra = models.CharField(
+        max_length=15,
+        choices=ORIGEM_COMPRA_CHOICES,
+        default='COMUM',
+        verbose_name='Origem da Compra'
+    )
+    
+    UNIDADE_CHOICES = (
+        ('KG', 'Quilogramas (KG)'),
+        ('G', 'Gramas (g)'),
+        ('L', 'Litros (L)'),
+        ('ML', 'Mililitros (mL)'),
+        ('UN', 'Unidades (Un)'),
+        ('CX', 'Caixas (Cx)'),
+        ('NA', 'Não Aplicável (N/A)')
+    )
+    
+    unidade_medida = models.CharField(
+        max_length=5,
+        choices=UNIDADE_CHOICES,
+        default='NA',
+        verbose_name='Unidade de Medida'
+    )
+    
+    possui_data_fabricacao = models.BooleanField(
+        default=True,
+        verbose_name='Possui Data de Fabricação?',
+    )
+    
+    possui_data_validade = models.BooleanField(
+        default=True,
+        verbose_name='Possui Data de Validade?'
+    )
 
     def __str__(self):
         return f"{self.nome} - {self.tipo}"
-    @property
-    def estoque_total(self):
-        """Soma a 'quantidade' de todos os lotes relacionados a este TipoProduto."""
-        soma = self.lote_set.aggregate(Sum('quantidade'))['quantidade__sum']
-        return soma or 0
+    
+    def __str__(self):
+        return f"{self.nome} ({self.get_unidade_medida_display()})"
 
     class Meta:
         ordering = ['nome']
@@ -32,11 +69,36 @@ class TipoProduto(models.Model):
         
         
 class Lote(models.Model):
-    tipo_produto = models.ForeignKey(TipoProduto, on_delete=models.CASCADE)
-    quantidade = models.PositiveIntegerField()
-    data_fabricacao = models.DateField()
-    data_validade = models.DateField()
-    observacoes = models.TextField(blank=True, null=True)
+    tipo_produto = models.ForeignKey(
+        TipoProduto, 
+        on_delete=models.CASCADE,
+        related_name='lotes'
+    )
+    
+    quantidade_pacotes = models.IntegerField(
+        verbose_name='Nº de Pacotes/Itens',
+        default=0,
+        help_text='Quantidade física de pacotes ou unidades.'
+    )
+    
+    quantidade_por_pacote = models.DecimalField(
+        max_digits=10,
+        default=1,
+        decimal_places=2,
+        verbose_name='Peso/Volume por Pacote',
+        help_text='Peso ou volume de cada pacote/item.',
+        null=True,
+        blank=True
+    )
+    
+    data_fabricacao = models.DateField(blank=True, null=True, verbose_name='Data de Fabricação')
+    data_validade = models.DateField(blank=True, null=True, verbose_name='Data de Validade')
+    observacoes = models.TextField(blank=True, null=True, verbose_name='Observações')
+    
+    @property
+    def quantidade_total_unidade(self):
+        quantidade_por_pacote = self.quantidade_por_pacote if self.quantidade_por_pacote is not None else 1
+        return self.quantidade_pacotes * self.quantidade_por_pacote
     
     def __str__(self):
             return f"Lote de {self.tipo_produto.nome} - Validade: {self.data_validade}"

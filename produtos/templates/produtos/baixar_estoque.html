@@ -1,22 +1,74 @@
+{% load static %}
 <!DOCTYPE html>
+<html lang="pt-br">
+
 <head>
-    <title>Baixa de Estoque</title>
+    <title>Dar Baixa no Lote {{ lote.id }}</title>
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lote.css' %}">
 </head>
+
 <body>
-    <h1>Dar Baixa no Estoque</h1>
-    <p>Produto: <strong>{{ lote.tipo_produto.nome }}</strong></p>
-    <p>Quantidade Atual do Lote: <strong>{{ lote.quantidade }}</strong></p>
+    <h1>Dar Baixa no Lote #{{ lote.id }}</h1>
 
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <div class="lote-detalhes">
+        <p>Produto: <strong>{{ lote.tipo_produto.nome }}</strong></p>
+        <p>Quantidade Disponível: <strong>{{ lote.quantidade }}</strong></p>
+        <p>Válido até: {{ lote.data_validade|date:"d/m/Y" }}</p>
+    </div>
 
-    <form method="post">
+    <form method="post" class="baixa-form">
         {% csrf_token %}
-        <label>Quantidade a remover:</label>
-        <input type="number" name="quantidade" min="1" required>
-        <button type="submit">Confirmar</button>
+
+        {{ form.as_p }}
+
+        <div class="form-actions">
+            <button type="button" class="button-danger" id="abrir-modal-baixa">
+                Confirmar Baixa
+            </button>
+        </div>
     </form>
-    <a href="{% url 'listar_lotes' lote.tipo_produto.id %}">Voltar</a>
+
+    <div id="modal-confirmacao-baixa" class="modal">
+        <div class="modal-content">
+            <h2>Confirmação de Baixa</h2>
+            <p>Atenção! Esta ação removerá a quantidade informada do estoque e não pode ser desfeita.</p>
+            <p>Tem certeza de que deseja prosseguir com a baixa?</p>
+
+            <div class="modal-actions">
+                <button class="button-secondary" id="cancelar-baixa">
+                    Cancelar
+                </button>
+
+                <button class="button-danger" id="confirmar-baixa-final">
+                    Sim, Dar Baixa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('abrir-modal-baixa').onclick = function () {
+            document.getElementById('modal-confirmacao-baixa').style.display = 'block';
+        };
+
+        document.getElementById('cancelar-baixa').onclick = function () {
+            document.getElementById('modal-confirmacao-baixa').style.display = 'none';
+        };
+
+        document.getElementById('confirmar-baixa-final').onclick = function () {
+            document.querySelector('.baixa-form').submit();
+        };
+
+        window.onclick = function (event) {
+            var modal = document.getElementById('modal-confirmacao-baixa');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+
+    <a href="{% url 'listar_lotes' lote.tipo_produto.id %}" class="link-voltar">Cancelar e Voltar para os Lotes</a>
 </body>
+
 </html>

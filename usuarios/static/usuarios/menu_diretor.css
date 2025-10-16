@@ -1,0 +1,92 @@
+.saudacao {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: #444444;
+}   
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 30px; 
+    margin-bottom: 50px;
+}
+
+.menu-card {
+    display: block; 
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    text-decoration: none; 
+    color: #333333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-top: 5px solid; 
+}
+
+.menu-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.menu-card h2 {
+    font-size: 1.4em;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #004d99; 
+}
+
+.menu-card p {
+    color: #666666;
+    font-size: 0.95em;
+}
+
+.card-icon {
+    font-size: 2.5em; 
+    display: block;
+    margin-bottom: 15px;
+}
+
+.card-destaque {
+    border-top-color: #ff9800; 
+}
+
+.card-destaque .card-icon {
+    color: #ff9800;
+}
+
+.card-estoque {
+    border-top-color: #004d99; 
+}
+
+.card-estoque .card-icon {
+    color: #004d99;
+}
+
+.card-consulta {
+    border-top-color: #4CAF50; 
+}
+
+.card-consulta .card-icon {
+    color: #4CAF50;
+}
+
+.menu-rodape {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #eeeeee;
+}
+
+.button-sair {
+    background-color: #999999; 
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.button-sair:hover {
+    background-color: #777777;
+}

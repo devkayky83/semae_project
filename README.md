@@ -17,7 +17,7 @@ Originalmente construido especificamente para a Prefeitura de São João Evangel
 
 ## ⚙️ Funcionalidades - Status: Em desenvolvimento
 
-- ✅ Cadastro de produtos com categorias e unidades de medida  
+- ✅ Cadastro de produtos em lotes com categorias e unidades de medida  
 - ✅ Controle de entrada e saída de estoque  
 - ✅ Relatórios de movimentação e inventário  
 - ✅ Autenticação e níveis de acesso (Usuários administrativos e comuns)  

@@ -1,8 +1,48 @@
-<h1>Menu da Nutricionista</h1>
-<p>Olá, {{ user.username }}!</p>
-<ul>
-    <li><a href="{% url 'listar_pedidos_pendentes' %}">Analisar Pedidos Pendentes</a></li>
-    <li><a href="{% url 'historico_pedidos' %}">Histórico de Pedidos</a></li> 
-    <li><a href="{% url 'listar_tipos_produto' %}">Gerenciar Estoque</a></li>
-</ul>
-<a href="{% url 'logout_usuario' %}">Sair</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Menu da Nutricionista | SEMAE</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'usuarios/base.css' %}">
+    <link rel="stylesheet" href="{% static 'usuarios/menu_nutricionista.css' %}">
+</head>
+
+<body>
+    <header class="menu-header">
+        <h1>Menu da Nutricionista</h1>
+
+        <div class="notification-area">
+            <p class="saudacao">Olá, <strong>{{ user.username }}</strong>!</p>
+        </div>
+    </header>
+
+    <div class="menu-grid">
+        <a href="{% url 'listar_pedidos_pendentes' %}" class="menu-card card-destaque">
+            <span class="card-icon">📋</span>
+            <h2>Analisar Pedidos Pendentes</h2>
+            <p>Verifique e aprove os novos pedidos das escolas.</p>
+        </a>
+
+        <a href="{% url 'listar_tipos_produto' %}" class="menu-card card-estoque">
+            <span class="card-icon">📦</span>
+            <h2>Gerenciar Estoque</h2>
+            <p>Cadastrar, dar baixa e controlar os lotes de produtos.</p>
+        </a>
+
+        <a href="{% url 'historico_pedidos' %}" class="menu-card card-consulta">
+            <span class="card-icon">📅</span>
+            <h2>Histórico de Pedidos</h2>
+            <p>Consulte todos os pedidos já aprovados e entregues.</p>
+        </a>
+    </div>
+
+    <div class="menu-rodape">
+        <a href="{% url 'logout_usuario' %}" class="button-sair">Sair do Sistema</a>
+    </div>
+</body>
+
+</html>

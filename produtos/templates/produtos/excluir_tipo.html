@@ -1,16 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
-<head>
-    <title>Confirmar Exclusão de Tipo de Produto</title>
-</head>
-<body>
-    <h1>Confirmar Exclusão</h1>
-    <p>Tem certeza que deseja excluir o tipo de produto <strong>{{ tipo_produto.nome }}</strong>?</p>
-    <p><strong>Esta ação também removerá todos os lotes associados a este produto e não pode ser desfeita.</strong></p>
+<html lang="pt-br">
 
-    <form method="post">
+<head>
+    <title>Excluir Tipo de Produto</title>
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/excluir_tipo_lote.css' %}">
+</head>
+
+<body>
+    <h1>Excluir Tipo de Produto</h1>
+
+    <div class="alerta-perigo">
+        <h2>Atenção! Confirmação de Exclusão</h2>
+        <p>Você está prestes a <strong>EXCLUIR PERMANENTEMENTE</strong> o tipo de produto a seguir. Esta ação é
+            <strong>irreversível</strong> e <strong>removerá TODOS OS LOTES ASSOCIADOS</strong>.</p>
+        <p>Confirme o nome do Tipo de Produto:</p>
+    </div>
+
+    <div class="lote-detalhes-excluir">
+        <p>Nome do Produto: <strong>{{ tipo_produto.nome }}</strong></p>
+        <p>Categoria: <strong>{{ tipo_produto.tipo }}</strong></p>
+    </div>
+
+    <form method="post" class="exclusao-form">
         {% csrf_token %}
-        <button type="submit">Sim, excluir</button>
-        <a href="{% url 'listar_tipos_produto' %}">Cancelar</a>
+
+        <button type="submit" class="button-danger-grande">
+            Confirmar Exclusão
+        </button>
     </form>
+
+    <a href="{% url 'listar_tipos_produto' %}" class="link-voltar-grande">Cancelar e Voltar para a Lista</a>
 </body>
+
 </html>

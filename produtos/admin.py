@@ -10,7 +10,7 @@ class TipoProdutoAdmin(admin.ModelAdmin):
 
 @admin.register(Lote)
 class LoteAdmin(admin.ModelAdmin):
-    list_display = ('tipo_produto', 'quantidade', 'data_fabricacao', 'data_validade')
+    list_display = ('tipo_produto', 'quantidade_pacotes', 'quantidade_por_pacote', 'data_fabricacao', 'data_validade')
     list_filter = ('tipo_produto',)
     search_fields = ('tipo_produto__nome',)
     ordering = ('data_validade',)

@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Adicionar Estoque no Lote {{ lote.id }}</title>
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lote.css' %}"> </head>
+
+<body>
+    <h1>Adicionar Estoque no Lote #{{ lote.id }}</h1>
+
+    <div class="lote-detalhes">
+        <p>Produto: <strong>{{ lote.tipo_produto.nome }}</strong></p>
+        <p>Quantidade Disponível: <strong>{{ lote.quantidade_pacotes }}</strong></p>
+        <p>Válido até: {{ lote.data_validade|date:"d/m/Y" }}</p>
+    </div>
+
+    <form method="post" class="baixa-form"> 
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="form-actions">
+            <button type="button" class="button-primary" id="abrir-modal-adicionar">
+                Confirmar Adição
+            </button>
+        </div>
+    </form>
+
+    <a href="{% url 'listar_lotes' lote.tipo_produto.id %}" class="link-voltar">Cancelar e Voltar para os Lotes</a>
+
+    <div id="modal-confirmacao-adicionar" class="modal">
+        <div class="modal-content">
+            <h2>Confirmação de Adição de Estoque</h2>
+            <p>Atenção! Esta ação adicionará a quantidade informada ao estoque atual do lote.</p>
+            <p>Tem certeza de que deseja prosseguir?</p>
+            
+            <div class="modal-actions">
+                <button class="button-secondary" id="cancelar-adicionar">
+                    Cancelar
+                </button>
+                
+                <button class="button-primary" id="confirmar-adicionar-final">
+                    Sim, Adicionar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const form = document.querySelector('.baixa-form'); 
+        const modal = document.getElementById('modal-confirmacao-adicionar');
+        const btnAbrirModal = document.getElementById('abrir-modal-adicionar');
+        const btnConfirmarFinal = document.getElementById('confirmar-adicionar-final');
+        const btnCancelar = document.getElementById('cancelar-adicionar');
+
+        btnAbrirModal.addEventListener('click', function() {
+            const quantidadeInput = form.querySelector('input[name="quantidade_pacotes"]');
+            
+            if (quantidadeInput && parseInt(quantidadeInput.value) > 0) {
+                 modal.style.display = 'block'; 
+            } else {
+                alert('Por favor, informe uma quantidade válida e positiva para adicionar.');
+                quantidadeInput.focus();
+            }
+        });
+
+        btnCancelar.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        btnConfirmarFinal.addEventListener('click', function() {
+            modal.style.display = 'none'; 
+            form.submit(); 
+        });
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

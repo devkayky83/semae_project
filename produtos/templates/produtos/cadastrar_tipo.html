@@ -1,16 +1,90 @@
+{% load static %}
 <!DOCTYPE html>
+<html lang="pt-br">
+
 <head>
-    <title>Cadastrar Tipo de Produto</title>
+    <meta charset="UTF-8">
+    <title>Novo Tipo de Produto</title>
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/cadastra_tipo.css' %}">
 </head>
+
 <body>
     <h1>Novo Tipo de Produto</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Cadastrar</button>
-    </form>
-    
-    <a href="{% url 'listar_tipos_produto' %}">Cancelar e Voltar para a Lista</a>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="form-group alert-error">
+                <p><strong>Erro Geral no Cadastro:</strong></p>
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div class="form-layout-grid">
+                
+                <div class="col-principal-fields">
+                    {% for field in form %}
+                    {% if field.name == 'nome' or field.name == 'tipo' or field.name == 'unidade_medida' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="col-rastreamento-button">
+                    
+                    <div class="rastreamento-box">
+                        <h2>Configurações de Rastreamento (Datas)</h2>
+
+                        <div class="form-group-checkbox">
+                            <label for="{{ form.possui_data_fabricacao.id_for_label }}">
+                                {{ form.possui_data_fabricacao }}
+                                {{ form.possui_data_fabricacao.label }}
+                            </label>
+                            {% for error in form.possui_data_fabricacao.errors %}
+                            <p class="errorlist">{{ error }}</p>
+                            {% endfor %}
+                            <small class="help-text">Desmarque se o produto não utiliza esta data.</small>
+                        </div>
+
+                        <div class="form-group-checkbox">
+                            <label for="{{ form.possui_data_validade.id_for_label }}">
+                                {{ form.possui_data_validade }}
+                                {{ form.possui_data_validade.label }}
+                            </label>
+                            {% for error in form.possui_data_validade.errors %}
+                            <p class="errorlist">{{ error }}</p>
+                            {% endfor %}
+                            <small class="help-text">Desmarque se o produto não utiliza esta data.</small>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="button-cadastro">Cadastrar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="rodape-link">
+        <a href="{% url 'listar_tipos_produto' %}" class="link-cancelar">Cancelar e Voltar para a Lista</a>
+    </div>
 </body>
+
 </html>

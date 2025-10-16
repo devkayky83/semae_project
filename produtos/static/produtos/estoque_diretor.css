@@ -1,0 +1,37 @@
+.tabela-pedidos thead th.col-tipo,
+.tabela-pedidos thead th.col-estoque-total,
+.tabela-pedidos thead th.col-status-solicitacao {
+    text-align: center;
+}
+
+.tabela-pedidos tbody td.col-tipo,
+.tabela-pedidos tbody td.col-estoque-total,
+.tabela-pedidos tbody td.col-status-solicitacao {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tabela-pedidos tbody td.col-produto {
+    font-weight: 500;
+}
+
+.status-disponivel, .status-indisponivel {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+.status-disponivel {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-indisponivel {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

@@ -1,0 +1,209 @@
+.tabela-pedidos {
+    width: 90%; 
+    max-width: 1000px;
+    margin: 30px auto; 
+    border-collapse: collapse; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    background-color: #ffffff;
+    border-radius: 8px; 
+    overflow: hidden; 
+}
+
+.tabela-pedidos thead th {
+    background-color: #004d99; 
+    color: #ffffff;
+    padding: 15px 10px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.tabela-pedidos tbody td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eeeeee; 
+    vertical-align: middle;
+}
+
+.tabela-pedidos thead th:nth-child(1),
+.tabela-pedidos thead th:nth-child(2), 
+.tabela-pedidos thead th:nth-child(3),
+.tabela-pedidos thead th:nth-child(4) { 
+    text-align: center;
+}
+
+.tabela-pedidos tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+.tabela-pedidos tbody tr:hover {
+    background-color: #e6f0ff; 
+}
+
+.pedido-id {
+    font-weight: bold;
+    color: #333333;
+    width: 10%; 
+    text-align: center;
+}
+
+.pedido-solicitante {
+    text-align: center;
+    font-weight: 500;
+}
+
+.pedido-data {
+    color: #666666;
+    width: 20%;
+    text-align: center;
+}
+
+.pedido-acoes {
+    text-align: center;
+    width: 20%;
+}
+
+.pedido-detalhes-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: 30px auto; 
+    display: flex; 
+    gap: 40px;
+    border-left: 5px solid #004d99;
+}
+
+.detalhe-info {
+    flex: 1;
+}
+.detalhe-info p {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+.detalhe-info strong {
+    color: #004d99;
+}
+
+.status-pendente {
+    font-weight: bold;
+    color: #ff9800; 
+    background-color: #fff3e0;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.itens-solicitados-bloco {
+    flex: 1.2; 
+    padding-left: 20px;
+    border-left: 1px solid #eeeeee;
+}
+
+lista-itens {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-itens li {
+    background-color: #f9f9f9;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+.item-quantidade {
+    font-weight: bold;
+    color: #333333;
+}
+
+.item-nome {
+    font-style: italic;
+    color: #666666;
+}
+
+divisor-acoes {
+    max-width: 700px;
+    margin: 40px auto 20px auto;
+    border: 0;
+    border-top: 1px solid #dddddd;
+}
+
+.acoes-pedido {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; 
+    gap: 20px;
+}
+
+.form-acao {
+    flex: 1;
+}
+
+.button-aprovar, .button-rejeitar {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button-aprovar {
+    background-color: #28a745; 
+    color: white;
+}
+
+.button-aprovar:hover {
+    background-color: #1e7e34;
+}
+
+.button-rejeitar {
+    background-color: #dc3545; 
+    color: #ffffff;
+}
+
+.button-rejeitar:hover {
+    background-color: #c82333;
+}
+
+.button-analisar {
+    display: inline-block;
+    background-color: #28a745; 
+    color: #ffffff;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.button-analisar:hover {
+    background-color: #218838;
+}
+
+.tabela-vazia {
+    text-align: center;
+    padding: 20px !important;
+    font-style: italic;
+    color: #666666;
+}
+
+.rodape-link {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.link-voltar {
+    color: #004d99;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.link-voltar:hover {
+    text-decoration: underline;
+}

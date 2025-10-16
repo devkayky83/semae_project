@@ -1,18 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
+
 <head>
     <title>Tipos de Produtos</title>
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
 </head>
+
 <body>
     <h1>Produtos no Estoque</h1>
 
-    <a href="{% url 'menu_principal' %}">Voltar para o Menu</a> |
-    <a href="{% url 'cadastrar_tipo_produto' %}">Novo Produto</a>
+    <div class="header-links">
+        <a href="{% url 'menu_principal' %}">Voltar para o Menu</a>
+        <a href="{% url 'cadastrar_tipo_produto' %}">Novo Produto</a>
+    </div>
 
     <form method="get">
-        <input type="text" name="buscar" placeholder="Buscar por nome" value="{{ busca }}"> 
+        <input type="text" name="buscar" placeholder="Buscar por nome" value="{{ busca }}">
 
         <select name="tipo">
-            <option value="TODOS" {% if tipo_selecionado == "TODOS" %}selected{% endif %}>Todos</option>
+            <option value="TODOS" {% if tipo_selecionado|stringformat:"s" == "TODOS" %}selected{% endif %}>Todos</option>
+
             {% for valor, label in tipos %}
             <option value="{{ valor }}" {% if tipo_selecionado == valor %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
@@ -22,14 +29,14 @@
             <option value="">-- Ordenar por --</option>
             <option value="nome" {% if ordem == "nome" %}selected{% endif %}>Nome (A-Z)</option>
         </select>
-        
+
         <button type="submit">Filtrar</button>
     </form>
 
     <ul>
         {% for tipo_produto in tipos_produto %}
         <li>
-            {{ tipo_produto.nome }} ({{ tipo_produto.tipo }}) - 
+            <strong>{{ tipo_produto.nome }}</strong> ({{ tipo_produto.tipo }}) -
             <a href="{% url 'listar_lotes' tipo_produto.id %}">Ver Lotes</a>
             <a href="{% url 'editar_tipo_produto' tipo_produto.id %}">Editar</a>
             <a href="{% url 'excluir_tipo_produto' tipo_produto.id %}">Excluir</a>
@@ -40,4 +47,5 @@
     </ul>
 
 </body>
+
 </html>

@@ -1,0 +1,79 @@
+.lotes-list {
+    list-style: none; 
+    padding: 0;
+    margin-top: 20px;
+}
+
+.lote-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; 
+    gap: 15px; 
+}
+
+.lote-quantidade-detalhe {
+    font-size: 0.95em;
+    color: #555555; 
+    font-weight: 500;
+}
+
+.qtd-pacotes {
+    font-weight: bold; 
+    color: #004d99; 
+}
+
+.qtd-por-pacote {
+    font-style: italic;
+}
+
+.lote-validade {
+    margin-left: auto; 
+    font-weight: normal;
+    color: #333333;
+}
+
+.lote-quantidade-detalhe strong {
+    color: #28a745; 
+    font-weight: 700;
+}
+
+.lote-item {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    background-color: #ffffff; 
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 5px solid #004d99; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+    font-size: 1em;
+}
+
+.lote-actions a {
+    margin-left: 15px;
+    font-size: 0.9em;
+    color: #007bff; 
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.lote-actions a:hover {
+    text-decoration: underline;
+}
+
+.lote-item.lote-vencido {
+    border-left: 5px solid #dc3545; 
+    background-color: #f8d7da;
+}
+
+.lote-item.lote-proximo-vencimento {
+    border-left: 5px solid #ffc107;
+    background-color: #fff3dc;
+}
+
+.lote-vencido .lote-info,
+.lote-proximo-vencimento .lote-info {
+    font-weight: bold;
+}

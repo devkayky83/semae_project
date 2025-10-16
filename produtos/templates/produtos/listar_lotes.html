@@ -1,26 +1,63 @@
+{% load static %}
 <!DOCTYPE html>
+<html lang="pt-br">
+
 <head>
     <title>Lotes de {{ tipo_produto.nome }}</title>
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/lista_lote.css' %}">
 </head>
+
 <body>
     <h1>Lotes de {{ tipo_produto.nome }}</h1>
-    <p>Tipo: {{ tipo_produto.tipo }}</p>
 
-    <a href="{% url 'listar_tipos_produto' %}">Voltar para a Lista de Produtos</a> |
-    <a href="{% url 'cadastrar_lote' tipo_produto.id %}">Adicionar Novo Lote</a>
+    <p>Tipo: <strong>{{ tipo_produto.tipo }}</strong></p>
 
-    <ul>
+    <div class="header-links">
+        <a href="{% url 'listar_tipos_produto' %}">Voltar para a Lista de Produtos</a>
+        <span>|</span> <a href="{% url 'cadastrar_lote' tipo_produto.id %}">Adicionar Novo Lote</a>
+    </div>
+
+    <ul class="lotes-list">
+        {% if lotes %}
         {% for lote in lotes %}
-        <li>
-            Lote: {{ lote.id }} - Qtd: {{ lote.quantidade }} - Válido até: {{ lote.data_validade }}
-            <a href="{% url 'baixar_estoque' lote.id %}">Dar Baixa</a>
-            <a href="{% url 'editar_lote' lote.id %}">Editar</a>
-            <a href="{% url 'excluir_lote' lote.id %}">Excluir</a>
-        </li>
-        {% empty %}
-        <li>Nenhum lote cadastrado para este produto.</li>
-        {% endfor %}
-    </ul>
+        <li class="lote-item {{ lote.alerta_classe }}">
+            <span class="lote-info">
+                Lote: <strong>#{{ lote.id }}</strong>
 
+                <span class="lote-quantidade-detalhe">
+                    <span class="qtd-pacotes">Quantidade: {{ lote.quantidade_pacotes }}</span>
+
+                {% if lote.tipo_produto.unidade_medida != 'NA' %}
+                    @
+                    <span class="qtd-por-pacote">{{ lote.quantidade_por_pacote|floatformat:"-2" }}
+                        {{ lote.tipo_produto.get_unidade_medida_display }}</span>
+
+                    (Total: <strong>{{ lote.quantidade_total_unidade|floatformat:"-2" }}
+                        {{ lote.tipo_produto.get_unidade_medida_display|lower }}</strong>)
+                {% else %}
+                    (Total: <strong>{{ lote.quantidade_total_unidade|floatformat:"-0" }} Itens</strong>)
+                {% endif %}
+                </span>
+
+                <span class="lote-validade">
+                    - Válido até: <strong>{{ lote.data_validade|date:"d/m/Y" }}</strong>
+                </span>
+            </span>
+
+            <span class="lote-actions">
+                <a href="{% url 'adicionar_estoque' lote.id %}">Adicionar</a>
+                <a href="{% url 'baixar_estoque' lote.id %}">Dar Baixa</a>
+                <a href="{% url 'editar_lote' lote.id %}">Editar</a>
+                <a href="{% url 'excluir_lote' lote.id %}">Excluir</a>
+            </span>
+
+        </li>
+        {% endfor %}
+        {% else %}
+        <p>Nenhum lote cadastrado para este produto.</p>
+        {% endif %}
+    </ul>
 </body>
+
 </html>

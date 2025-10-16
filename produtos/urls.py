@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import verificar_pedidos_pendentes
 
 urlpatterns = [
     # URLs para Tipos de Produto
@@ -12,6 +13,7 @@ urlpatterns = [
     path('lotes/<int:tipo_produto_id>/', views.listar_lotes, name='listar_lotes'),
     path('lotes/<int:tipo_produto_id>/novo/', views.cadastrar_lote, name='cadastrar_lote'),
     path('lotes/editar/<int:lote_id>/', views.editar_lote, name='editar_lote'),
+    path('lote/<int:lote_id>/adicionar/', views.adicionar_estoque, name='adicionar_estoque'),
     path('lotes/baixar/<int:lote_id>/', views.baixar_estoque, name='baixar_estoque'),
     path('lotes/excluir/<int:lote_id>/', views.excluir_lote, name='excluir_lote'),
     
@@ -19,7 +21,7 @@ urlpatterns = [
     path('exportar/excel/', views.exportar_excel, name='exportar_excel'),
     path('exportar/pdf/', views.exportar_pdf, name='exportar_pdf'),
 
-    # URLs para produtos
+    # URLs para pedidos de produtos
     path('pedidos/novo/', views.criar_pedido, name='criar_pedido'),
     path('pedidos/<int:pedido_id>/', views.detalhe_pedido, name='detalhe_pedido'),
     path('pedidos/item/remover/<int:item_id>/', views.remover_item_pedido, name='remover_item_pedido'),
@@ -32,5 +34,5 @@ urlpatterns = [
     path('pedidos/<int:pedido_id>/aprovar/', views.aprovar_pedido, name='aprovar_pedido'),
     path('pedidos/<int:pedido_id>/rejeitar/', views.rejeitar_pedido, name='rejeitar_pedido'),
     path('pedidos/historico/', views.historico_pedidos, name='historico_pedidos'),
-
+    path('api/pedidos/pendentes/contagem/', verificar_pedidos_pendentes, name='contagem_pedidos_pendentes'),
 ]

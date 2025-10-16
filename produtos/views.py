@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import TipoProduto, Lote
-from .forms import TipoProdutoForm, Loteform
+from .forms import TipoProdutoForm, Loteform, AdicionarEstoqueForm, BaixaEstoqueForm
 from xhtml2pdf import pisa
 from usuarios.views import is_nutricionista, is_secretario_or_nutricionista
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,7 +11,10 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Pedido, ItemPedido, TipoProduto
 from .forms import ItemPedidoForm
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Q, F, Value, Sum, IntegerField
+from django.db.models.functions import Coalesce
+from django.contrib import messages
+from datetime import date, timedelta
 
 import openpyxl
 
@@ -63,12 +66,25 @@ def cadastrar_tipo_produto(request):
 @user_passes_test(is_secretario_or_nutricionista)
 def listar_lotes(request, tipo_produto_id):
     tipo_produto = get_object_or_404(TipoProduto, pk=tipo_produto_id)
-    lotes = tipo_produto.lote_set.all()
+    lotes = Lote.objects.filter(tipo_produto=tipo_produto).order_by(F('data_validade').asc(nulls_last=True))
     
-    return render(request, 'produtos/listar_lotes.html', {
-        'tipo_produto': tipo_produto,
-        'lotes': lotes,
-    })
+    hoje = date.today()
+    alerta_dias = 30
+    
+    for lote in lotes:
+        if lote.data_validade is None:
+            lote.alerta_classe = 'lote-sem-validade' 
+            continue 
+
+        if lote.data_validade < hoje:
+            lote.alerta_classe = 'lote-vencido'
+        elif lote.data_validade <= hoje + timedelta(days=alerta_dias):
+            lote.alerta_classe = 'lote-proximo-vencimento'
+        else:
+            lote.alerta_classe = ''
+            
+    context = {'tipo_produto': tipo_produto, 'lotes': lotes}
+    return render(request, 'produtos/listar_lotes.html', context)
     
 
 
@@ -76,18 +92,23 @@ def listar_lotes(request, tipo_produto_id):
 @login_required
 @user_passes_test(is_secretario_or_nutricionista)
 def cadastrar_lote(request, tipo_produto_id):
-    tipo_produto = get_object_or_404(TipoProduto, pk=tipo_produto_id)
+    tipo_produto = get_object_or_404(TipoProduto, id=tipo_produto_id)
+
     if request.method == 'POST':
-        form = Loteform(request.POST)
+        form = Loteform(request.POST, tipo_produto=tipo_produto)
         if form.is_valid():
             lote = form.save(commit=False)
-            lote.tipo_produto = tipo_produto
+            lote.tipo_produto = tipo_produto 
             lote.save()
-            return redirect('listar_lotes', tipo_produto_id=tipo_produto_id)
+            return redirect('listar_lotes', tipo_produto_id=tipo_produto.id)
     else:
-        form = Loteform()
-        
-    return render(request, 'produtos/cadastrar_lote.html', {'form': form, 'tipo_produto': tipo_produto})
+        form = Loteform(tipo_produto=tipo_produto)
+    
+    context = {
+        'form': form,
+        'tipo_produto': tipo_produto,
+    }
+    return render(request, 'produtos/cadastrar_lote.html', context)
 
 
 
@@ -126,30 +147,52 @@ def excluir_tipo_produto(request, tipo_produto_id):
 
 
 
+@login_required
+@user_passes_test(is_nutricionista)
+def adicionar_estoque(request, lote_id):
+    lote = get_object_or_404(Lote, pk=lote_id)
+    
+    if request.method == 'POST':
+        form = AdicionarEstoqueForm(request.POST) 
+        
+        if form.is_valid():
+            novos_pacotes = form.cleaned_data['quantidade_pacotes'] 
+            lote.quantidade_pacotes += novos_pacotes
+            lote.save()
+            
+            return redirect('listar_lotes', tipo_produto_id=lote.tipo_produto.id)
+    else:
+        form = AdicionarEstoqueForm()
+    
+    return render(request, 'produtos/adicionar_estoque.html', {'form': form, 'lote': lote}) 
+
+
 # Apenas nutricionista pode baixar produtos do estoque
+# Em produtos/views.py
 @login_required
 @user_passes_test(is_nutricionista)
 def baixar_estoque(request, lote_id):
     lote = get_object_or_404(Lote, pk=lote_id)
     
     if request.method == 'POST':
-        quantidade_remover = int(request.POST.get('quantidade', 0))
+        form = BaixaEstoqueForm(request.POST) 
         
-        if quantidade_remover <= 0:
-            error = "Informe um valor positivo."
-        elif quantidade_remover > lote.quantidade:
-            error = "Não há unidades suficientes no estoque."
-        else:
-            lote.quantidade -= quantidade_remover
-            lote.save()
-            return redirect('listar_lotes', tipo_produto_id=lote.tipo_produto.id)
-        
-        return render(request, 'produtos/baixar_estoque.html', {
-            'lote': lote,
-            'error': error
-        })
+        if form.is_valid():
+            quantidade_remover = form.cleaned_data['quantidade_pacotes']
+            
+            if quantidade_remover > lote.quantidade_pacotes:
+                form.add_error('quantidade', "Não há unidades suficientes no estoque.")
+            else:
+                lote.quantidade_pacotes -= quantidade_remover
+                lote.save()
+                return redirect('listar_lotes', tipo_produto_id=lote.tipo_produto.id)   
+    else:      
+        form = BaixaEstoqueForm() 
     
-    return render(request, 'produtos/baixar_estoque.html', {'lote': lote})
+    return render(request, 'produtos/baixar_estoque.html', {
+        'lote': lote,
+        'form': form, 
+    })
 
 
 
@@ -216,6 +259,7 @@ def exportar_excel(request):
     return response
 
 
+
 @login_required
 @user_passes_test(is_secretario_or_nutricionista)
 def exportar_pdf(request):
@@ -229,12 +273,16 @@ def exportar_pdf(request):
     pisa.CreatePDF(html, dest=response)
     return response
 
+
+
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
 def criar_pedido(request):
 
     novo_pedido = Pedido.objects.create(solicitante=request.user)
     return redirect('detalhe_pedido', pedido_id=novo_pedido.id)
+
+
 
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
@@ -246,12 +294,17 @@ def detalhe_pedido(request, pedido_id):
         if form.is_valid():
             produto_selecionado = form.cleaned_data['produto']
             quantidade_adicionar = form.cleaned_data['quantidade']
-            estoque_disponivel = produto_selecionado.estoque_total
+            
+            estoque_disponivel_qs = TipoProduto.objects.filter(pk=produto_selecionado.pk).annotate(
+                estoque_total = Sum('lotes__quantidade_pacotes')
+            )
+            
+            estoque_disponivel = estoque_disponivel_qs.first().estoque_total or 0
 
             item_existente = ItemPedido.objects.filter(pedido=pedido, produto=produto_selecionado).first()
 
             quantidade_existente = item_existente.quantidade if item_existente else 0
-            quantidade_final_desejada = quantidade_existente + quantidade_adicionar
+            quantidade_final_desejada = quantidade_existente + quantidade_adicionar 
 
             if quantidade_final_desejada > estoque_disponivel:
                 messages.error(request, f"Estoque insuficiente para '{produto_selecionado.nome}'. "
@@ -280,6 +333,8 @@ def detalhe_pedido(request, pedido_id):
     }
     return render(request, 'pedidos/detalhe_pedido.html', context)
 
+
+
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
 def remover_item_pedido(request, item_id):
@@ -294,6 +349,8 @@ def remover_item_pedido(request, item_id):
     else:
         return HttpResponseForbidden("Você não tem permissão para remover este item.")
 
+
+
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
 def meus_pedidos(request):
@@ -305,7 +362,7 @@ def meus_pedidos(request):
     
     return render(request, 'pedidos/meus_pedidos.html', context)
 
-from django.contrib import messages
+
 
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
@@ -316,19 +373,28 @@ def finalizar_pedido(request, pedido_id):
     messages.success(request, f"Pedido #{pedido.id} foi finalizado e enviado para análise!")
     return redirect('menu_diretor')
 
-from django.db.models import Sum
+
 
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
 def listar_estoque_disponivel(request):
 
-    produtos = TipoProduto.objects.order_by('nome')
+    produtos = TipoProduto.objects.annotate(
+        total_estoque=Coalesce(
+            Sum('lotes__quantidade_pacotes'), 
+            0,
+            output_field=IntegerField()
+        )
+    ).order_by('nome')
     
     context = {
         'produtos': produtos
     }
     
     return render(request, 'produtos/estoque_disponivel.html', context)
+
+
+
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
 def excluir_pedido(request, pedido_id):
@@ -344,6 +410,8 @@ def excluir_pedido(request, pedido_id):
 
     return redirect('meus_pedidos')
 
+
+
 @login_required
 @user_passes_test(lambda u: u.is_nutricionista())
 def listar_pedidos_pendentes(request):
@@ -352,6 +420,8 @@ def listar_pedidos_pendentes(request):
         'pedidos': pedidos
     }
     return render(request, 'pedidos/listar_pedidos_pendentes.html', context)
+
+
 
 @login_required
 @user_passes_test(lambda u: u.is_nutricionista())
@@ -362,32 +432,50 @@ def detalhe_pedido_nutricionista(request, pedido_id):
     }
     return render(request, 'pedidos/detalhe_pedido_nutricionista.html', context)
 
+
+
 @login_required
 @user_passes_test(lambda u: u.is_nutricionista())
 def aprovar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    
+    if pedido.status != 'PENDENTE':
+        messages.error(request, f"O pedido #{pedido.id} não está pendente.")
+        return redirect('listar_pedidos_pendentes')
+    
     if request.method == 'POST':
-        pedido = get_object_or_404(Pedido, id=pedido_id)
-        
         try:
             with transaction.atomic():
+                
+                produtos_ids = pedido.itens.values_list('produto_id', flat=True)
+                produtos_com_estoque = TipoProduto.objects.filter(id__in=produtos_ids).annotate(
+                    estoque_atual=Sum('lotes__quantidade_pacotes')
+                )
+                estoque_map = {p.id: p.estoque_atual or 0 for p in produtos_com_estoque}
+                
                 for item in pedido.itens.all():
-                    if item.quantidade > item.produto.estoque_total:
+                    quantidade_solicitada = item.quantidade
+                    if quantidade_solicitada > estoque_map.get(item.produto.id, 0):
                         raise Exception(f"Estoque insuficiente para o produto '{item.produto.nome}'.")
 
                 for item in pedido.itens.all():
                     quantidade_a_baixar = item.quantidade
-                    lotes_disponiveis = Lote.objects.filter(tipo_produto=item.produto, quantidade__gt=0).order_by('data_validade')
+                    lotes_disponiveis = Lote.objects.filter(
+                        tipo_produto=item.produto, 
+                        quantidade_pacotes__gt=0
+                    ).order_by('data_validade')
                     
                     for lote in lotes_disponiveis:
                         if quantidade_a_baixar == 0:
                             break
                         
-                        if lote.quantidade >= quantidade_a_baixar:
-                            lote.quantidade -= quantidade_a_baixar
+                        if lote.quantidade_pacotes >= quantidade_a_baixar:
+                            lote.quantidade_pacotes -= quantidade_a_baixar
                             quantidade_a_baixar = 0
                         else:
-                            quantidade_a_baixar -= lote.quantidade
-                            lote.quantidade = 0
+                            quantidade_a_baixar -= lote.quantidade_pacotes
+                            lote.quantidade_pacotes = 0
+                            
                         lote.save()
                 pedido.status = 'APROVADO'
                 pedido.save()
@@ -409,6 +497,8 @@ def rejeitar_pedido(request, pedido_id):
         messages.success(request, f"Pedido #{pedido.id} foi rejeitado.")
     return redirect('listar_pedidos_pendentes')
 
+
+
 @login_required
 @user_passes_test(lambda u: u.is_nutricionista())
 def historico_pedidos(request):
@@ -422,3 +512,14 @@ def historico_pedidos(request):
     
     return render(request, 'pedidos/historico_pedidos.html', context)
 
+
+@login_required
+@user_passes_test(lambda u: u.is_nutricionista())
+def verificar_pedidos_pendentes(request):
+    if not request.user.is_nutricionista():
+        return JsonResponse({'count': 0, 'sucess': False})
+    
+    contagem = Pedido.objects.filter(status='PENDENTE').count()
+    return JsonResponse({'count': contagem, 'success': True})
+        
+    

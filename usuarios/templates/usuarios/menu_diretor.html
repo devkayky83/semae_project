@@ -1,29 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-    <style>
-        .messages { list-style: none; padding: 0; margin: 1em 0; }
-        .messages li { padding: 10px; border-radius: 5px; margin-bottom: 10px; }
-        .messages li.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .messages li.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    </style>
+    <title>Página Inicial | Diretor - SEMAE</title>
+    <link rel="stylesheet" href="{% static 'usuarios/base.css' %}">
+    <link rel="stylesheet" href="{% static 'usuarios/menu_diretor.css' %}"> 
 </head>
 <body>
     <h1>Página Inicial - Diretor</h1>
-
+    
     {% if messages %}
         <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
+            </ul>
     {% endif %}
     
-    <p>Bem-vindo(a), {{ user.username }}!</p>
+    <p class="saudacao">Bem-vindo(a), <strong>{{ user.username }}</strong>! Escolha uma opção abaixo:</p>
     
-    <ul>
-        <li><a href="{% url 'estoque_disponivel' %}">Ver Estoque Disponível</a></li>
-        <li><a href="{% url 'criar_pedido' %}">Fazer Nova Solicitação de Pedido</a></li>
-        <li><a href="{% url 'meus_pedidos' %}">Ver Meus Pedidos</a></li>
-    </ul>
+    <div class="menu-grid">
+        
+        <a href="{% url 'criar_pedido' %}" class="menu-card card-destaque">
+            <span class="card-icon">📝</span> <h2>Fazer Nova Solicitação de Pedido</h2>
+            <p>Inicie o processo para solicitar novos itens de estoque para sua escola.</p>
+        </a>
+        
+        <a href="{% url 'estoque_disponivel' %}" class="menu-card card-estoque">
+            <span class="card-icon">🔎</span> <h2>Ver Estoque Disponível</h2>
+            <p>Consulte a lista de produtos que podem ser solicitados ao almoxarifado.</p>
+        </a>
 
-    <a href="{% url 'logout_usuario' %}">Sair</a>
+        <a href="{% url 'meus_pedidos' %}" class="menu-card card-consulta">
+            <span class="card-icon">📦</span> <h2>Ver Meus Pedidos</h2>
+            <p>Acompanhe o status e histórico de todas as suas solicitações.</p>
+        </a>
+
+    </div>
+
+    <div class="menu-rodape">
+        <a href="{% url 'logout_usuario' %}" class="button-sair">Sair do Sistema</a>
+    </div>
 </body>
+</html>
