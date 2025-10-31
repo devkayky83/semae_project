@@ -354,7 +354,11 @@ def remover_item_pedido(request, item_id):
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
 def meus_pedidos(request):
-    pedidos_do_diretor = Pedido.objects.filter(solicitante=request.user).order_by('-data_pedido')
+    
+    pedidos_do_diretor = Pedido.objects.filter(
+        solicitante=request.user,
+        itens__isnull=False 
+    ).distinct().order_by('-data_pedido')
     
     context = {
         'pedidos': pedidos_do_diretor
@@ -415,7 +419,12 @@ def excluir_pedido(request, pedido_id):
 @login_required
 @user_passes_test(lambda u: u.is_nutricionista())
 def listar_pedidos_pendentes(request):
-    pedidos = Pedido.objects.filter(status='PENDENTE').order_by('data_pedido')
+
+    pedidos = Pedido.objects.filter(
+        status='PENDENTE', 
+        itens__isnull=False
+    ).distinct().order_by('data_pedido')
+    
     context = {
         'pedidos': pedidos
     }
