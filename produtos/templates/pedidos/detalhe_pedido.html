@@ -17,6 +17,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
+        
         <div class="pedido-info">
             <h1>Pedido de Solicitação #{{ pedido.id }}</h1>
             <p><strong>Status:</strong> {{ pedido.get_status_display }}</p>
@@ -44,6 +45,9 @@
                                     {% csrf_token %}
                                     <button type="submit" onclick="return confirm('Tem certeza que deseja remover este item?');">Remover</button>
                                 </form>
+                                {% else %}
+                                    -
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -56,12 +60,13 @@
 
         <hr>
 
+        {% if pedido.status == 'PENDENTE' %}
         <div class="form-adicionar">
             <h2>Adicionar Novo Item</h2>
             <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Adicionar Item ao Pedido</button>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Adicionar Item ao Pedido</button>
             </form>
         </div>
         
@@ -69,5 +74,9 @@
         <a href="{% url 'finalizar_pedido' pedido.id %}" class="link-finalizar">Finalizar Pedido</a>
         <a href="{% url 'meus_pedidos' %}" class="link-pedidos">Ver Meus Pedidos</a>
     </div>
+    {% endif %}
+<br>
+    <a href="{% url 'meus_pedidos' %}">Ver Meus Pedidos</a>
+</div>
 </body>
 </html>
