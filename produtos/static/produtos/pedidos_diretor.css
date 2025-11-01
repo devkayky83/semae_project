@@ -60,3 +60,14 @@ th {
 .btn:hover {
   background-color: #e0e0e0;
 }
+
+.link-voltar {
+    color: #004d99;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.link-voltar:hover {
+    text-decoration: underline;
+}
