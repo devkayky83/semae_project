@@ -1,23 +1,25 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Detalhes do Pedido #{{ pedido.id }}</title>
     <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
     <link rel="stylesheet" href="{% static 'produtos/detalhe_pedido.css'%}">
 </head>
+
 <body>
     <div class="container">
-        
+
         {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
+        <ul class="messages"></ul>
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
         {% endif %}
-        
+
         <div class="pedido-info">
             <h1>Pedido de Solicitação #{{ pedido.id }}</h1>
             <p><strong>Status:</strong> {{ pedido.get_status_display }}</p>
@@ -27,56 +29,55 @@
         <div class="itens-lista">
             <h2>Itens no Pedido</h2>
             {% if itens %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Quantidade</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in itens %}
-                        <tr>
-                            <td>{{ item.produto.nome }}</td>
-                            <td>{{ item.quantidade }}</td>
-                            <td>
-                                <form method="post" action="{% url 'remover_item_pedido' item.id %}" style="display: inline-table;">
-                                    {% csrf_token %}
-                                    <button type="submit" onclick="return confirm('Tem certeza que deseja remover este item?');">Remover</button>
-                                </form>
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in itens %}
+                    <tr>
+                        <td>{{ item.produto.nome }}</td>
+                        <td>{{ item.quantidade }}</td>
+                        <td>
+                            {% if pedido.status == 'PENDENTE' %}
+                            <form method="post" action="{% url 'remover_item_pedido' item.id %}"
+                                style="display: inline-table;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    onclick="return confirm('Tem certeza que deseja remover este item?');">Remover</button>
+                            </form>
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
-                <p>Nenhum item adicionado a este pedido ainda.</p>
+            <p>Nenhum item adicionado a este pedido ainda.</p>
             {% endif %}
         </div>
-
         <hr>
-
         {% if pedido.status == 'PENDENTE' %}
         <div class="form-adicionar">
             <h2>Adicionar Novo Item</h2>
             <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Adicionar Item ao Pedido</button>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Adicionar Item ao Pedido</button>
             </form>
         </div>
-        
         <br>
         <a href="{% url 'finalizar_pedido' pedido.id %}" class="link-finalizar">Finalizar Pedido</a>
         <a href="{% url 'meus_pedidos' %}" class="link-pedidos">Ver Meus Pedidos</a>
     </div>
     {% endif %}
-<br>
-    <a href="{% url 'meus_pedidos' %}">Ver Meus Pedidos</a>
-</div>
+    <br>
+    </div>
 </body>
 </html>
