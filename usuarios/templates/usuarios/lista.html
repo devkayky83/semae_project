@@ -1,10 +1,49 @@
-<h2>Usuários Cadastrados</h2>
-<a href="{% url 'criar_usuario' %}">Criar novo usuário</a>
-<ul>
-    {% for u in usuarios %}
-        <li>
-            {{ u.username }} ({{ u.cargo }})
-            <a href="{% url 'editar_usuario' u.id %}">Editar</a>
-            <a href="{% url 'excluir_usuario' u.id %}">Excluir</a>  </li>
-    {% endfor %}
-</ul>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Usuários Cadastrados</title>
+    <link rel="stylesheet" href="{% static 'usuarios/base.css' %}">
+    <link rel="stylesheet" href="{% static 'usuarios/usuarios_lista.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="titulo-pagina">Usuários Cadastrados</h2>
+        <a href="{% url 'criar_usuario' %}" class="link-criar">Criar novo usuário</a>
+
+        {% if usuarios %}
+        <table class="tabela-usuarios">
+            <thead>
+                <tr>
+                    <th>Nome de Usuário</th>
+                    <th>Cargo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usuarios %}
+                <tr>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.cargo }}</td>
+                    <td class="acoes">
+                        <a href="{% url 'editar_usuario' u.id %}" class="link-editar">Editar</a>
+                        <a href="{% url 'excluir_usuario' u.id %}" class="link-excluir">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Nenhum usuário cadastrado.</p>
+        {% endif %}
+    </div>
+
+    <div class="menu-rodape">
+        <a href="{% url 'menu_secretario' %}" class="button-sair">Voltar ao Menu</a>
+    </div>
+</body>
+
+</html>

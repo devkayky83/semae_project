@@ -1,24 +1,17 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
     <title>Menu da Nutricionista | SEMAE</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <link rel="stylesheet" href="{% static 'usuarios/base.css' %}">
-    <link rel="stylesheet" href="{% static 'usuarios/menu_nutricionista.css' %}">
+    <link rel="stylesheet" href="{% static 'usuarios/menu_principal.css' %}">
 </head>
 
 <body>
-    <header class="menu-header">
-        <h1>Menu da Nutricionista</h1>
+    <h1>Página Inicial - Nutricionista</h1>
 
-        <div class="notification-area">
-            <p class="saudacao">Olá, <strong>{{ user.username }}</strong>!</p>
-        </div>
-    </header>
+    <p class="saudacao">Olá, <strong>{{ user.username }}</strong>! Escolha uma opção abaixo:</p>
 
     <div class="menu-grid">
         <a href="{% url 'listar_pedidos_pendentes' %}" class="menu-card card-destaque">
