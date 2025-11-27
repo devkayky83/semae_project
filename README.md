@@ -1,11 +1,11 @@
-# 📦 PROJETO - SEMAE
+# PROJETO - SEMAE
 
 **SEMAE - Sistema de Controle de Estoque para Escolas Municipais**  
 Desenvolvido em **Python** com o framework **Django**
 
 ---
 
-## 📚 Sobre o Projeto
+## Sobre o Projeto
 
 O **Projeto SEMAE** (Sistema de Estoque Municipal para Ambientes Escolares) tem como objetivo fornecer uma solução simples, eficiente e web-based para o controle de estoque de materiais em escolas municipais.
 
@@ -15,7 +15,7 @@ Originalmente construido especificamente para a Prefeitura de São João Evangel
 
 ---
 
-## ⚙️ Funcionalidades - Status: Em desenvolvimento
+## Funcionalidades - Status: Em desenvolvimento
 
 - ✅ Cadastro de produtos em lotes com categorias e unidades de medida  
 - ✅ Controle de entrada e saída de estoque  
@@ -26,7 +26,7 @@ Originalmente construido especificamente para a Prefeitura de São João Evangel
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Python 3.10+**
 - **Django 4.x**
@@ -36,7 +36,7 @@ Originalmente construido especificamente para a Prefeitura de São João Evangel
 
 ---
 
-## 🚀 Como Executar o Projeto Localmente
+## Como Executar o Projeto Localmente
 
 ### Pré-requisitos
 
