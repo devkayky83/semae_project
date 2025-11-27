@@ -1,0 +1,103 @@
+body {
+    margin: 20px;
+    background-color: #f4f4f9;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.titulo-pagina {
+    color: #333333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.link-criar {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.link-criar:hover {
+    background-color: #218838;
+}
+
+.tabela-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tabela-usuarios thead th {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.tabela-usuarios tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.tabela-usuarios tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.tabela-usuarios tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.acoes a {
+    margin-right: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.acoes .link-editar {
+    color: #007bff;
+}
+
+.acoes .link-excluir {
+    color: #dc3545;
+}
+
+.acoes a:hover {
+    text-decoration: underline;
+}
+
+menu-rodape {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #eeeeee;
+}
+
+.button-sair {
+    background-color: #28a745; 
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.button-sair:hover {
+    background-color: #218838;
+}
