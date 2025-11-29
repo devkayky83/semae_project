@@ -1,19 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Confirmar Exclusão</title>
-    </head>
+    <link rel="stylesheet" href="{% static 'usuarios/excluir_usuario.css' %}">
+</head>
 <body>
-    <h1>Confirmar Exclusão</h1>
-    
-    <p>Você tem certeza que deseja excluir o usuário "<strong>{{ usuario.username }}</strong>"?</p>
-    <p><strong>Esta ação não pode ser desfeita.</strong></p>
 
-    <form method="post">
-        {% csrf_token %} <button type="submit" style="background-color: #dc3545; color: white;">Sim, tenho certeza</button>
-    </form>
-    <br>
-    <a href="{% url 'lista_usuarios' %}">Cancelar e Voltar</a>
+    <div class="confirmation-container">
+        <h2 class="titulo-perigo">Confirmar Exclusão</h2>
+        
+        <div class="mensagem-corpo">
+            <p>Você tem certeza que deseja excluir o usuário:</p>
+            <p class="usuario-alvo">"{{ usuario.username }}"</p>
+        </div>
+
+        <div class="alerta-box">
+            <p><strong>⚠️ Atenção:</strong> Esta ação não pode ser desfeita.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %} 
+            <button type="submit" class="btn-excluir">Sim, tenho certeza</button>
+        </form>
+        
+        <a href="{% url 'lista_usuarios' %}" class="link-cancelar">Cancelar e Voltar</a>
+    </div>
 </body>
 </html>

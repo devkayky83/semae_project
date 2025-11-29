@@ -1,6 +1,28 @@
-<h2>Criar Novo Usuário</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p}}
-    <button type="submit">Cadastrar</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Novo Usuário</title>
+    <link rel="stylesheet" href="{% static 'usuarios/criar_usuario.css' %}">
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Criar Novo Usuário</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn-cadastrar">Cadastrar</button>
+        </form>
+
+
+        <a href="{% url 'menu_secretario' %}" class="link-voltar">Cancelar e voltar ao Menu</a>
+    </div>
+</body>
+
+</html>

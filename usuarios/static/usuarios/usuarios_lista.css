@@ -81,13 +81,8 @@ body {
     text-decoration: underline;
 }
 
-menu-rodape {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid #eeeeee;
-}
-
 .button-sair {
+    margin: 50px;
     background-color: #28a745; 
     color: #ffffff;
     padding: 10px 20px;

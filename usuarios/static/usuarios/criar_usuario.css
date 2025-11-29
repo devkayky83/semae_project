@@ -1,0 +1,105 @@
+body {
+    display: flex;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.form-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    margin: 40px;
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 15px;
+}
+
+form p {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555555;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+form input:focus,
+form select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.helptext,
+form ul {
+    font-size: 0.85em;
+    color: #666666;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 20px;
+}
+
+form ul li {
+    margin-bottom: 4px;
+    list-style-type: disc;
+}
+
+.btn-cadastrar {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: #ffffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.btn-cadastrar:hover {
+    background-color: #218838;
+}
+
+.link-voltar {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #666666;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.link-voltar:hover {
+    color: #333333;
+    text-decoration: underline;
+}

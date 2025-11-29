@@ -35,14 +35,11 @@
                 </tr>
                 {% endfor %}
             </tbody>
+            <a href="{% url 'menu_secretario' %}" class="button-sair">Voltar ao Menu</a>
         </table>
         {% else %}
         <p>Nenhum usuário cadastrado.</p>
         {% endif %}
-    </div>
-
-    <div class="menu-rodape">
-        <a href="{% url 'menu_secretario' %}" class="button-sair">Voltar ao Menu</a>
     </div>
 </body>
 
