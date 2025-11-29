@@ -1,18 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Editar Usuário</title>
-    </head>
+    <link rel="stylesheet" href="{% static 'usuarios/criar_usuario.css' %}">
+</head>
 <body>
-    <h1>Editando o usuário: {{ usuario.username }}</h1>
 
-    <form method="post">
-        {% csrf_token %} {{ form.as_p }} 
+    <div class="form-container">
+        <h2 class="titulo-pagina">Editando: {{ usuario.username }}</h2>
 
-        <button type="submit">Salvar Alterações</button>
-    </form>
-    <br>
-    <a href="{% url 'lista_usuarios' %}">Cancelar e voltar para a lista</a>
+        <form method="post">
+            {% csrf_token %}
+            
+            {{ form.as_p }} 
+
+            <button type="submit" class="btn-cadastrar">Salvar Alterações</button>
+        </form>
+
+        <a href="{% url 'menu_secretario' %}" class="link-voltar">Cancelar e voltar ao menu</a>
+    </div>
+
 </body>
 </html>

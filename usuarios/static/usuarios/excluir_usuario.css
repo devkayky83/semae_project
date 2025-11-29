@@ -1,0 +1,83 @@
+body {
+    display: flex;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.confirmation-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center; 
+    box-sizing: border-box;
+    border-top: 5px solid #dc3545; 
+}
+
+.titulo-perigo {
+    color: #dc3545;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.mensagem-corpo {
+    font-size: 1.1em;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.usuario-alvo {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #000000;
+    margin: 10px 0;
+}
+
+.alerta-box {
+    background-color: #fff5f5;
+    border: 1px solid #ffc9c9;
+    color: #c53030;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    font-size: 0.9em;
+}
+
+.btn-excluir {
+    width: 100%;
+    padding: 12px;
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(220, 53, 69, 0.3);
+}
+
+.btn-excluir:hover {
+    background-color: #c82333;
+}
+
+.link-cancelar {
+    display: block;
+    margin-top: 20px;
+    color: #666666;
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: color 0.2s;
+}
+
+.link-cancelar:hover {
+    color: #333333;
+    text-decoration: underline;
+}
