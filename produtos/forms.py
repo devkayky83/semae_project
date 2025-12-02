@@ -31,6 +31,7 @@ class Loteform(forms.ModelForm):
             'quantidade_por_pacote',
             'data_fabricacao',
             'data_validade',
+            'preco_unitario',
             'observacoes'
         ]
         

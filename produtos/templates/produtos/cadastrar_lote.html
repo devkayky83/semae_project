@@ -42,10 +42,17 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="{{ form.preco_unitario.id_for_label }}">Preço Unitário (R$):</label>
+                <div class="form-group">
+                    {{ form.preco_unitario }}
+                </div>
+                {{ form.preco_unitario.errors }}
+            </div>
             {% for field in form %}
 
-            {% if field.name == 'quantidade_pacotes' or field.name == 'quantidade_por_pacote' %}
-            {% comment %} Ignorado, já renderizado {% endcomment %}
+            {% if field.name == 'quantidade_pacotes' or field.name == 'quantidade_por_pacote' or field.name == 'preco_unitario' %}
+            {% comment %} Ignorado, já renderizado explicitamente {% endcomment %}
 
             {% elif field.name == 'data_fabricacao' %}
             {% if tipo_produto.possui_data_fabricacao %}
@@ -77,6 +84,7 @@
                 {% endfor %}
             </ul>
             {% endif %}
+            
             {% endfor %}
             <button type="submit" class="button-cadastro">Cadastrar Lote</button>
         </form>
