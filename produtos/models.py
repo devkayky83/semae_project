@@ -91,6 +91,14 @@ class Lote(models.Model):
         blank=True
     )
     
+    preco_unitario = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name="Preço Unitário (R$)"
+    )
+    
     data_fabricacao = models.DateField(blank=True, null=True, verbose_name='Data de Fabricação')
     data_validade = models.DateField(blank=True, null=True, verbose_name='Data de Validade')
     observacoes = models.TextField(blank=True, null=True, verbose_name='Observações')
