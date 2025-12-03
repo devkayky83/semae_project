@@ -12,22 +12,24 @@
     <h1>Excluir Tipo de Produto</h1>
 
     <div class="alerta-perigo">
-        <h2>Atenção! Confirmação de Exclusão</h2>
-        <p>Você está prestes a <strong>EXCLUIR PERMANENTEMENTE</strong> o tipo de produto a seguir. Esta ação é
-            <strong>irreversível</strong> e <strong>removerá TODOS OS LOTES ASSOCIADOS</strong>.</p>
-        <p>Confirme o nome do Tipo de Produto:</p>
+        <h2>Atenção! Confirmação de Arquivamento</h2>
+        <p>Você está prestes a <strong>EXCLUIR/ARQUIVAR </strong> o tipo de produto a seguir. Esta ação não é
+            <strong>irreversível</strong>, o produto será <strong>arquivado</strong> e não aparecerá mais nas listagens ativas, 
+            mas seus dados e lotes serão mantidos para <strong>histórico e relatórios</strong>.</p>
+        <p>Confirme os Dados:</p>
     </div>
 
     <div class="lote-detalhes-excluir">
         <p>Nome do Produto: <strong>{{ tipo_produto.nome }}</strong></p>
         <p>Categoria: <strong>{{ tipo_produto.tipo }}</strong></p>
+        <p>Origem: <strong>{{ tipo_produto.origem_compra }}</strong></p>
     </div>
 
     <form method="post" class="exclusao-form">
         {% csrf_token %}
 
         <button type="submit" class="button-danger-grande">
-            Confirmar Exclusão
+            Confirmar Arquivamento
         </button>
     </form>
 
