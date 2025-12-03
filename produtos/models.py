@@ -54,6 +54,12 @@ class TipoProduto(models.Model):
         default=True,
         verbose_name='Possui Data de Validade?'
     )
+    
+    ativo = models.BooleanField(
+        default=True,
+        verbose_name='Ativo',
+        help_text='Produtos inativos não aparecem para novos pedidos, mas mantêm histórico'
+    )
 
     def __str__(self):
         return f"{self.nome} - {self.tipo}"

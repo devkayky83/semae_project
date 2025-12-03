@@ -35,6 +35,12 @@ def listar_tipos_produto(request):
     ordem = request.GET.get('ordem')
     if ordem == 'nome':
         tipos_produto = tipos_produto.order_by('nome')
+        
+    ativo = request.GET.get('ativo')
+    if ativo == 'False':
+        tipos_produto = tipos_produto.filter(ativo=False)
+    else:
+        tipos_produto = tipos_produto.filter(ativo=True)
     
     return render(request, 'produtos/listar_tipos.html', {
         'tipos_produto': tipos_produto,
@@ -42,6 +48,7 @@ def listar_tipos_produto(request):
         'busca': busca or '',
         'tipo_selecionado': tipo or 'TODOS',
         'ordem': ordem or '',
+        'ativo': ativo or 'True',
     }) 
 
 
@@ -139,8 +146,11 @@ def editar_tipo_produto(request, tipo_produto_id):
 def excluir_tipo_produto(request, tipo_produto_id):
     tipo_produto = get_object_or_404(TipoProduto, pk=tipo_produto_id)
     
+    #Arquiva em vez de excluir literalmente para manter histórico e relátorio.
     if request.method == 'POST':
-        tipo_produto.delete()
+        tipo_produto.ativo = False
+        tipo_produto.save()
+        messages.success(request=f"Produto '{tipo_produto.nome}' foi arquivado com sucesso.")
         return redirect('listar_tipos_produto')
 
     return render(request, 'produtos/excluir_tipo.html', {'tipo_produto': tipo_produto}) 
@@ -383,7 +393,7 @@ def finalizar_pedido(request, pedido_id):
 @user_passes_test(lambda u: u.is_diretor())
 def listar_estoque_disponivel(request):
 
-    produtos = TipoProduto.objects.annotate(
+    produtos = TipoProduto.objects.filter(ativo=True).annotate(
         total_estoque=Coalesce(
             Sum('lotes__quantidade_pacotes'), 
             0,

@@ -26,8 +26,13 @@
         </select>
 
         <select name="ordem">
-            <option value="">-- Ordenar por --</option>
+            <option value="TODOS" {% if ordem == "TODOS" %}selected{% endif %}>-- Ordenar por --</option>
             <option value="nome" {% if ordem == "nome" %}selected{% endif %}>Nome (A-Z)</option>
+        </select>
+
+        <select name="ativo">
+            <option value="True" {% if ativo == "True" or not ativo %}selected{% endif %}>Ativo</option>
+            <option value="False" {% if ativo == "False" %}selected{% endif %}>Arquivado</option>
         </select>
 
         <button type="submit">Filtrar</button>
