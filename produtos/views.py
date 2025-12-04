@@ -97,7 +97,7 @@ def listar_lotes(request, tipo_produto_id):
 
 # Apenas nutricionista pode cadastrar lotes de produtos no estoque
 @login_required
-@user_passes_test(is_secretario_or_nutricionista)
+@user_passes_test(is_nutricionista)
 def cadastrar_lote(request, tipo_produto_id):
     tipo_produto = get_object_or_404(TipoProduto, id=tipo_produto_id)
 
@@ -121,7 +121,7 @@ def cadastrar_lote(request, tipo_produto_id):
 
 # Apenas nutricionista pode editar tipos de produtos no estoque
 @login_required
-@user_passes_test(is_secretario_or_nutricionista)
+@user_passes_test(is_nutricionista)
 def editar_tipo_produto(request, tipo_produto_id):
     tipo_produto = get_object_or_404(TipoProduto, pk=tipo_produto_id)
     
@@ -142,19 +142,32 @@ def editar_tipo_produto(request, tipo_produto_id):
 
 # Apenas nutricionista pode excluir tipos de produtos no estoque
 @login_required
-@user_passes_test(is_secretario_or_nutricionista)
+@user_passes_test(is_nutricionista)
 def excluir_tipo_produto(request, tipo_produto_id):
     tipo_produto = get_object_or_404(TipoProduto, pk=tipo_produto_id)
     
-    #Arquiva em vez de excluir literalmente para manter histórico e relátorio.
+    # Arquiva em vez de excluir literalmente para manter histórico e relátorio.
     if request.method == 'POST':
         tipo_produto.ativo = False
         tipo_produto.save()
-        messages.success(request=f"Produto '{tipo_produto.nome}' foi arquivado com sucesso.")
+        messages.success(request, f"Produto '{tipo_produto.nome}' foi arquivado com sucesso.")
         return redirect('listar_tipos_produto')
 
     return render(request, 'produtos/excluir_tipo.html', {'tipo_produto': tipo_produto}) 
 
+
+@login_required
+@user_passes_test(is_nutricionista)
+def reativar_tipo_produto(request, tipo_produto_id):
+    tipo_produto = get_object_or_404(TipoProduto, pk=tipo_produto_id)
+    
+    if request.method == 'POST':
+        tipo_produto.ativo = True
+        tipo_produto.save()
+        messages.success(request, f"Produto '{tipo_produto.nome}' foi reativado com sucesso.")
+        return redirect('listar_tipos_produto')
+    
+    return render(request, 'produtos/reativar_tipo.html', {'tipo_produto': tipo_produto})
 
 
 @login_required

@@ -8,6 +8,7 @@ urlpatterns = [
     path('novo/', views.cadastrar_tipo_produto, name='cadastrar_tipo_produto'),
     path('editar/<int:tipo_produto_id>/', views.editar_tipo_produto, name='editar_tipo_produto'),
     path('excluir/<int:tipo_produto_id>/', views.excluir_tipo_produto, name='excluir_tipo_produto'),
+    path('tipo/<int:tipo_produto_id>/reativar/', views.reativar_tipo_produto, name='reativar_tipo_produto'),
 
     # URLs para Lotes
     path('lotes/<int:tipo_produto_id>/', views.listar_lotes, name='listar_lotes'),
