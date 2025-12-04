@@ -50,6 +50,10 @@ class BaixaEstoqueForm(forms.Form):
         widget=forms.NumberInput(attrs={'class': 'form-control'})    )
         
 class ItemPedidoForm(forms.ModelForm):
+    produto = forms.ModelChoiceField(
+        queryset=TipoProduto.objects.filter(ativo=True),
+        label="Produto"
+    )
     class Meta:
         model = ItemPedido
         fields = ['produto', 'quantidade']

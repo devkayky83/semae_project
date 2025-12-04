@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'produtos/estoque_lista.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/reativar_tipo.css' %}">
+    <title>Reativar Produto</title>
+</head>
+<body>
+    <h1>Reativar Produto</h1>
+    <div class="alerta-info">
+        <h2>Confirmação de Reativação</h2>
+        <p>Você está prestes a <strong>REATIVAR</strong> o produto abaixo.</p>
+        <p>Ele voltára a aparecer nas <strong>listagens ativas</strong> e poderá ser usado em novos pedidos e guarda de lotes.</p>
+        <p>Confirme os Dados:</p>
+    </div>
+
+    <div class="produto-detalhes">
+        <p>Nome: <strong>{{ tipo_produto.nome }}</strong></p>
+        <p>Categoria: <strong>{{ tipo_produto.get_tipo_display }}</strong></p>
+        <p>Origem: <strong>{{ tipo_produto.origem_compra }}</strong></p>
+    </div>
+
+    <form method="post" class="reativar-form">
+        {% csrf_token %}
+        <button type="submit" class="button-danger-grande">
+            Confirmar Reativação
+        </button>
+    </form>
+
+    <a href="{% url 'listar_tipos_produto' %}" class="link-voltar-grande">Cancelar e Voltar</a>
+</body>
+</html>

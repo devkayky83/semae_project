@@ -42,9 +42,15 @@
         {% for tipo_produto in tipos_produto %}
         <li>
             <strong>{{ tipo_produto.nome }}</strong> ({{ tipo_produto.tipo }}) -
-            <a href="{% url 'listar_lotes' tipo_produto.id %}">Ver Lotes</a>
-            <a href="{% url 'editar_tipo_produto' tipo_produto.id %}">Editar</a>
-            <a href="{% url 'excluir_tipo_produto' tipo_produto.id %}">Excluir</a>
+            {% if not tipo_produto.ativo %}
+                <a href="{% url 'reativar_tipo_produto' tipo_produto.id %}">Reativar</a>
+            {% endif %}
+
+            {% if tipo_produto.ativo %}
+                <a href="{% url 'listar_lotes' tipo_produto.id %}">Ver Lotes</a>
+                <a href="{% url 'editar_tipo_produto' tipo_produto.id %}">Editar</a>
+                <a href="{% url 'excluir_tipo_produto' tipo_produto.id %}">Excluir</a>
+            {% endif %}
         </li>
         {% empty %}
         <li>Nenhum tipo de produto cadastrado.</li>
