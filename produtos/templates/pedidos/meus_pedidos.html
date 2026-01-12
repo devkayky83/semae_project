@@ -5,29 +5,21 @@
     <meta charset="UTF-8">
     <title>Meus Pedidos</title>
     <link rel="stylesheet" href="{% static 'produtos/pedidos_diretor.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
+
+    <div class="container-lista">
+
         <h1>Meus Pedidos de Solicitação</h1>
+        <p class="descricao">Acompanhe aqui o status de todos os seus pedidos.</p>
 
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
-        <p>Acompanhe aqui o status de todos os seus pedidos.</p>
-        
-        <a href="{% url 'criar_pedido' %}" class="btn">Fazer Nova Solicitação</a>
-        <hr style="margin: 1em 0;">
-
+        {% if pedidos %}
         <table>
             <thead>
                 <tr>
-                    <th>Nº do Pedido</th>
-                    <th>Data da Solicitação</th>
+                    <th>Nº Pedido</th>
+                    <th>Data</th>
                     <th>Status</th>
                     <th>Ações</th>
                 </tr>
@@ -36,31 +28,40 @@
                 {% for pedido in pedidos %}
                 <tr>
                     <td>#{{ pedido.id }}</td>
-                    <td>{{ pedido.data_pedido|date:"d/m/Y H:i" }}</td>
-                    <td>{{ pedido.get_status_display }}</td>
+                    <td>{{ pedido.data_pedido|date:"d/m/Y - H:i" }}</td>
+                    
                     <td>
-                        <a href="{% url 'detalhe_pedido' pedido.id %}" class="btn">Ver / Editar</a>
-                        
-                        {% if pedido.status == 'PENDENTE' %}
-                            <form method="post" action="{% url 'excluir_pedido' pedido.id %}" style="display: inline; margin-left: 5px;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn" onclick="return confirm('Tem certeza que deseja excluir o pedido #{{ pedido.id }}?');">
-                                    Excluir
-                                </button>
-                            </form>
+                        {% if pedido.status == 'APROVADO' %}
+                            <span class="badge badge-aprovado">Aprovado</span>
+                        {% elif pedido.status == 'REJEITADO' %}
+                            <span class="badge badge-rejeitado">Rejeitado</span>
+                        {% else %}
+                            <span class="badge badge-pendente">Pendente</span>
                         {% endif %}
                     </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4">Você ainda não fez nenhum pedido.</td>
+
+                    <td>
+                        <a href="{% url 'detalhe_pedido' pedido.id %}" class="btn-acao">Ver Detalhes</a>
+
+                        {% if pedido.status == 'PENDENTE' %}
+                            <a href="{% url 'excluir_pedido' pedido.id %}" class="btn-acao excluir" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <p style="padding: 20px; color: #666;">Nenhum pedido realizado ainda.</p>
+        {% endif %}
 
-        <br>
-        <a href="{% url 'menu_diretor' %}" class="link-voltar">Voltar ao Menu</a>
+        <div class="acoes-rodape">
+            <a href="{% url 'menu_diretor' %}" class="link-voltar">← Voltar ao Menu Principal</a>
+            
+            <a href="{% url 'criar_pedido' %}" class="btn-novo">+ Fazer Nova Solicitação</a>
+        </div>
+
     </div>
+
 </body>
 </html>

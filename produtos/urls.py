@@ -36,4 +36,7 @@ urlpatterns = [
     path('pedidos/<int:pedido_id>/rejeitar/', views.rejeitar_pedido, name='rejeitar_pedido'),
     path('pedidos/historico/', views.historico_pedidos, name='historico_pedidos'),
     path('api/pedidos/pendentes/contagem/', verificar_pedidos_pendentes, name='contagem_pedidos_pendentes'),
+    path('pedidos/compras-diretas/', views.lista_compras_secretario, name='lista_compras_secretario'),
+    path('pedidos/<int:pedido_id>/marcar-comprado/', views.marcar_carne_comprada, name='marcar_carne_comprada'),
+
 ]

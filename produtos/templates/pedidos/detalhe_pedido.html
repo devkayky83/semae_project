@@ -11,17 +11,19 @@
 
 <body>
     <div class="container">
-
-        {% if messages %}
-        <ul class="messages"></ul>
-        {% for message in messages %}
-        <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-
+        
         <div class="pedido-info">
             <h1>Pedido de Solicitação #{{ pedido.id }}</h1>
+            
+            {% if pedido.status == 'REJEITADO' and pedido.justificativa_rejeicao %}
+                <div class="aviso-rejeicao">
+                    <h3>⛔ Pedido Rejeitado</h3>
+                    <p><strong>A nutricionista deixou a seguinte observação:</strong></p>
+                    <div class="texto-justificativa">
+                        "{{ pedido.justificativa_rejeicao }}"
+                    </div>
+                </div>
+            {% endif %}
             <p><strong>Status:</strong> {{ pedido.get_status_display }}</p>
             <p><strong>Data:</strong> {{ pedido.data_pedido|date:"d/m/Y H:i" }}</p>
         </div>
@@ -71,13 +73,106 @@
                 {{ form.as_p }}
                 <button type="submit">Adicionar Item ao Pedido</button>
             </form>
-        </div>
+        </div> {% endif %}
         <br>
-        <a href="{% url 'finalizar_pedido' pedido.id %}" class="link-finalizar">Finalizar Pedido</a>
-        <a href="{% url 'meus_pedidos' %}" class="link-pedidos">Ver Meus Pedidos</a>
+
+<h3>Solicitação Especial (Carne)</h3>
+
+{% if pedido.carne_comprada %}
+    <div class="card border-success mb-3">
+        <div class="card-header bg-success text-white">
+            <strong>✅ Compra Realizada!</strong>
+        </div>
+        <div class="card-body text-success">
+            <h5 class="card-title">O Secretário já efetuou esta compra.</h5>
+            <p class="card-text">
+                <strong>Item solicitado:</strong><br>
+                {{ pedido.observacao_carne|linebreaks }}
+            </p>
+            <hr>
+            <small>Este pedido foi processado e arquivado pela secretaria.</small>
+        </div>
     </div>
-    {% endif %}
-    <br>
+
+{% elif pedido.observacao_carne %}
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">⏳ Enviado para a Secretaria</h4>
+        <p>Você solicitou: <strong>{{ pedido.observacao_carne }}</strong></p>
+        <hr>
+        <p class="mb-0">Aguardando o Secretário visualizar e confirmar a compra. Assim que ele confirmar, você verá um aviso verde aqui.</p>
     </div>
-</body>
-</html>
+
+    <details>
+        <summary style="cursor: pointer; color: #003366;">Clique aqui se precisar corrigir o texto</summary>
+        <br>
+        <form method="POST" action="{% url 'finalizar_pedido' pedido.id %}">
+            {% csrf_token %}
+            <textarea name="obs_carne" class="form-control" rows="3">{{ pedido.observacao_carne }}</textarea>
+            <button type="submit" class="btn btn-primary mt-2">Atualizar Texto</button>
+        </form>
+    </details>
+
+{% else %}
+    <p>Use este espaço para pedir itens que vêm direto do mercado e não passam pelo estoque.</p>
+    <form method="POST" action="{% url 'finalizar_pedido' pedido.id %}">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <textarea name="obs_carne" class="form-control" rows="5" placeholder="Digite aqui sua solicitação de carne..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Salvar Solicitação de Carne</button>
+    </form>
+
+{% endif %}
+
+<br><br>
+<hr style="border-top: 1px solid #eee; margin-bottom: 30px;">
+
+<style>
+    .btn-custom-modern {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px; 
+        padding: 14px 28px; 
+        border-radius: 12px; 
+        font-weight: 700; 
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        text-decoration: none !important;
+        color: white !important;
+        border: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
+        transition: all 0.2s ease; 
+    }
+
+    .btn-custom-modern:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-back-dark {
+        background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+    }
+
+    .btn-primary-blue {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    }
+</style>
+
+
+<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-bottom: 50px;">
+    
+    <a href="{% url 'menu_diretor' %}" class="btn-custom-modern btn-back-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Voltar ao Menu
+    </a>
+
+    <a href="{% url 'meus_pedidos' %}" class="btn-custom-modern btn-primary-blue">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+          <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+        </svg>
+        Ver Meus Pedidos
+    </a>
+
+</div>

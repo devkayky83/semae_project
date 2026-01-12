@@ -1,0 +1,97 @@
+body {
+    background-color: #f4f6f9; /* Fundo levemente cinza */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-custom {
+    max-width: 1000px;
+    margin: 40px auto;
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.page-header {
+    color: #003366; /* Azul Escuro Anglo */
+    font-weight: 700;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-compra {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    background-color: #fff;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.card-compra:hover {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.card-header-compra {
+    background-color: #d9534f; /* Vermelho para destacar urgência */
+    color: white;
+    padding: 12px 20px;
+    font-size: 1.05rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-body-compra {
+    padding: 25px;
+}
+
+.box-itens {
+    background-color: #f8f9fa;
+    border-left: 5px solid #d9534f;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: #333;
+    white-space: pre-wrap; /* Mantém as quebras de linha */
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+}
+
+.btn-marcar {
+    background-color: #28a745; 
+    color: white;
+}
+.btn-marcar:hover { opacity: 0.9; }
+
+.empty-state {
+    text-align: center;
+    padding: 60px;
+    color: #6c757d;
+}
+
+.link-voltar {
+    color: #003366;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 20px;
+    display: inline-block;
+}
+.link-voltar:hover { text-decoration: underline; }

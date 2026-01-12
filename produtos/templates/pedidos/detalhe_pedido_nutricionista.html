@@ -33,24 +33,26 @@
     <hr class="divisor-acoes">
     
     <div class="acoes-pedido">
-        {% if pedido.status == 'PENDENTE' %}
-            <form method="post" action="{% url 'aprovar_pedido' pedido.id %}" class="form-acao">
-                {% csrf_token %}
-                <button type="submit" class="button-aprovar">Aprovar Pedido</button>
-            </form>
-            
-            <form method="post" action="{% url 'rejeitar_pedido' pedido.id %}" class="form-acao">
-                {% csrf_token %}
-                <button type="submit" class="button-rejeitar">Rejeitar Pedido</button>
-            </form>
-        {% else %}
-            <p>Este pedido já foi processado.</p>
-        {% endif %}
+    
+    <form action="{% url 'aprovar_pedido' pedido.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn-aprovar">Aprovar Pedido</button>
+    </form>
+
+    <hr>
+
+    <div class="area-rejeicao">
+        <h3>Rejeitar Pedido</h3>
+        <p>Se for rejeitar, explique o motivo para o diretor:</p>
+        
+        <form action="{% url 'rejeitar_pedido' pedido.id %}" method="post">
+            {% csrf_token %}
+            <textarea name="justificativa" rows="3" placeholder="Ex: Estoque insuficiente de arroz para esta semana..." required></textarea>
+            <br>
+            <button type="submit" class="btn-rejeitar">Confirmar Rejeição</button>
+        </form>
     </div>
 
-    <br>
-    <div class="rodape-link">
-        <a href="{% url 'listar_pedidos_pendentes' %}" class="link-voltar">Voltar para a Lista</a>
-    </div>
+</div>
 </body>
 </html>

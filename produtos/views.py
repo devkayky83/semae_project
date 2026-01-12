@@ -394,12 +394,23 @@ def meus_pedidos(request):
 @login_required
 @user_passes_test(lambda u: u.is_diretor())
 def finalizar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    
+    if request.method == 'POST':
+        # 1. Pega o texto da caixa (se o diretor escreveu algo)
+        observacao = request.POST.get('obs_carne')
+        
+        if observacao:
+            pedido.observacao_carne = observacao
+            
+        # 2. Muda o status e salva
+        pedido.status = 'PENDENTE' # Envia para análise
+        pedido.save()
+        
+        return redirect('meus_pedidos')
 
-    pedido = get_object_or_404(Pedido, id=pedido_id, solicitante=request.user)
-
-    messages.success(request, f"Pedido #{pedido.id} foi finalizado e enviado para análise!")
-    return redirect('menu_diretor')
-
+    # Se tentar acessar via GET, redireciona de volta
+    return redirect('detalhe_pedido', pedido_id=pedido.id)
 
 
 @login_required
@@ -522,14 +533,21 @@ def aprovar_pedido(request, pedido_id):
 @login_required
 @user_passes_test(lambda u: u.is_nutricionista())
 def rejeitar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    
     if request.method == 'POST':
-        pedido = get_object_or_404(Pedido, id=pedido_id)
+        # Pega o texto digitado no formulário
+        motivo = request.POST.get('justificativa')
+        
         pedido.status = 'REJEITADO'
+        pedido.justificativa_rejeicao = motivo # Salva o motivo
         pedido.save()
-        messages.success(request, f"Pedido #{pedido.id} foi rejeitado.")
-    return redirect('listar_pedidos_pendentes')
-
-
+        
+        messages.success(request, f"Pedido #{pedido.id} rejeitado. Motivo registrado.")
+        return redirect('listar_pedidos_pendentes')
+    
+    # Se tentar acessar sem enviar o formulário, redireciona de volta
+    return redirect('detalhe_pedido_nutricionista', pedido_id=pedido.id)
 
 @login_required
 @user_passes_test(lambda u: u.is_nutricionista())
@@ -553,5 +571,42 @@ def verificar_pedidos_pendentes(request):
     
     contagem = Pedido.objects.filter(status='PENDENTE').count()
     return JsonResponse({'count': contagem, 'success': True})
-        
+
+@login_required
+@user_passes_test(lambda u: u.is_diretor())
+def menu_diretor(request):
+    # Renderiza a tela inicial do diretor (os 3 cards grandes)
+    return render(request, 'usuarios/menu_diretor.html')
     
+@login_required
+@user_passes_test(lambda u: u.is_diretor())
+def excluir_pedido(request, pedido_id):
+    # Busca o pedido e garante que ele pertence ao usuário logado
+    pedido = get_object_or_404(Pedido, id=pedido_id, solicitante=request.user)
+
+    # Verifica o status
+    if pedido.status == 'PENDENTE':
+        numero = pedido.id
+        pedido.delete() # Deleta do banco de dados
+        messages.success(request, f"Pedido #{numero} excluído com sucesso.")
+    else:
+        messages.error(request, "Você só pode excluir pedidos que ainda estão pendentes.")
+
+    # Atualiza a página voltando para a lista
+    return redirect('meus_pedidos')
+
+
+@login_required
+def lista_compras_secretario(request):
+    lista = Pedido.objects.exclude(observacao_carne__exact='') \
+                          .exclude(observacao_carne__isnull=True) \
+                          .filter(carne_comprada=False)
+
+    # CORREÇÃO AQUI: Mudamos de 'secretario/...' para 'pedidos/...'
+    return render(request, 'pedidos/compras_diretas.html', {'lista': lista})
+
+def marcar_carne_comprada(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    pedido.carne_comprada = True
+    pedido.save()
+    return redirect('lista_compras_secretario')

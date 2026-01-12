@@ -1,0 +1,63 @@
+{% load static %}  
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compras Diretas - Secretaria</title>
+    
+    <link rel="stylesheet" href="{% static 'usuarios/base.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'produtos/compras_diretas.css' %}"> 
+</head>
+<body>
+
+    <div class="container-custom">
+        
+        <div class="page-header">
+            <h2>🛒 Painel de Compras Diretas (Secretaria)</h2>
+            <a href="{% url 'root_login' %}" class="btn-action" style="background-color: #6c757d; color: white; font-size: 0.9rem;">
+                Voltar ao Menu
+            </a>
+        </div>
+
+        {% for pedido in lista %}
+        <div class="card-compra">
+            <div class="card-header-compra">
+                <span>
+                    <strong>Escola:</strong> {{ pedido.usuario.username }} 
+                    <span style="opacity: 0.9; font-weight: normal;">(Pedido #{{ pedido.id }})</span>
+                </span>
+                <span style="font-size: 0.9rem; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 15px;">
+                    📅 {{ pedido.data_criacao|date:"d/m/Y" }}
+                </span>
+            </div>
+
+            <div class="card-body-compra">
+                <p style="color: #555; margin-bottom: 10px;">O diretor solicitou a compra direta dos seguintes itens:</p>
+                
+                <div class="box-itens">{{ pedido.observacao_carne }}</div>
+
+                <hr style="margin: 20px 0; border-top: 1px solid #eee;">
+
+                <div style="text-align: right;">
+                    <a href="{% url 'marcar_carne_comprada' pedido.id %}" class="btn-action btn-marcar" onclick="return confirm('Confirmar que a compra destes itens foi realizada?');">
+                        ✅ Marcar Compra Realizada
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+            <h3 style="color: #28a745; margin-bottom: 10px;">Tudo em dia!</h3>
+            <p>Não há solicitações de compras pendentes no momento.</p>
+        </div>
+        {% endfor %}
+
+        <a href="{% url 'menu_do_secretario' %}"> class="link-voltar">← Voltar ao Menu Principal</a>
+
+    </div>
+
+</body>
+</html>

@@ -135,6 +135,9 @@ class Pedido(models.Model):
     solicitante = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name='pedidos_feitos')
     data_pedido = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDENTE')
+    justificativa_rejeicao = models.TextField(null=True, blank=True, verbose_name="Motivo da Rejeição")
+    observacao_carne = models.TextField(blank=True, null=True, verbose_name="Solicitação de Carne/Perecíveis")
+    carne_comprada = models.BooleanField(default=False, verbose_name="Compra de Carne Realizada")
 
     class Meta:
         verbose_name = 'Pedido'
