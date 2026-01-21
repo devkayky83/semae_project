@@ -1,28 +1,91 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
-    <title>Criar Novo Usuário</title>
+    <title>Criar Novo Usuário | SEMAE</title>
     <link rel="stylesheet" href="{% static 'usuarios/criar_usuario.css' %}">
 </head>
-
 <body>
-    <div class="form-container">
+    <div class="recipiente-formulario">
         <h2>Criar Novo Usuário</h2>
 
         <form method="POST">
             {% csrf_token %}
 
-            {{ form.as_p }}
+            <div class="grupo-formulario">
+                <label for="{{ form.username.id_for_label }}">Nome de Usuário:</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="msg-erro">{{ form.username.errors }}</div>
+                {% endif %}
+                <small class="texto-ajuda">{{ form.username.help_text }}</small>
+            </div>
 
-            <button type="submit" class="btn-cadastrar">Cadastrar</button>
+            <div class="grupo-formulario">
+                <label for="{{ form.email.id_for_label }}">Email:</label>
+                {{ form.email }}
+            </div>
+
+            <div class="grupo-formulario">
+                <label for="{{ form.cargo.id_for_label }}" class="rotulo-formulario">Cargo do Usuário:</label>
+                {{ form.cargo }}
+            </div>
+
+            <div id="div_nome_escola" class="campo-escola-escondido">
+                <label for="id_nome_escola" class="rotulo-formulario">Nome Oficial da Escola:</label>
+                <input type="text" name="nome_escola" id="id_nome_escola" class="entrada-customizada" 
+                       placeholder="Ex: Escola Municipal Cesar Pimenta">
+                <small class="texto-informativo">Este nome será usado nos cabeçalhos dos relatórios oficiais.</small>
+            </div>
+
+            <div class="grupo-formulario">
+                <label for="{{ form.password1.id_for_label }}">Senha:</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="msg-erro">{{ form.password1.errors }}</div>
+                {% endif %}
+                <small class="texto-ajuda">{{ form.password1.help_text }}</small>
+            </div>
+
+            <div class="grupo-formulario">
+                <label for="{{ form.password2.id_for_label }}">Confirmação de Senha:</label>
+                {{ form.password2 }}
+                 {% if form.password2.errors %}
+                    <div class="msg-erro">{{ form.password2.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="botao-cadastrar">Cadastrar Usuário</button>
         </form>
 
-
-        <a href="{% url 'menu_secretario' %}" class="link-voltar">Cancelar e voltar ao Menu</a>
+        <a href="{% url 'lista' %}" class="link-voltar">← Cancelar e voltar</a>
     </div>
-</body>
 
+    <script>
+        function alternarCampoEscola() {
+            const seletorCargo = document.getElementById('id_cargo');
+            const divEscola = document.getElementById('div_nome_escola');
+            const entradaEscola = document.getElementById('id_nome_escola');
+
+            if (seletorCargo.value === 'DIRETOR') {
+                divEscola.style.display = 'block';
+                entradaEscola.required = true;
+            } else {
+                divEscola.style.display = 'none';
+                entradaEscola.required = false; 
+                entradaEscola.value = ''; 
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const seletorCargo = document.getElementById('id_cargo');
+            if(seletorCargo) {
+                seletorCargo.addEventListener('change', alternarCampoEscola);
+            }
+            alternarCampoEscola();
+        });
+    </script>
+</body>
 </html>

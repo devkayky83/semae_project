@@ -52,11 +52,11 @@
             </tbody>
         </table>
         {% else %}
-            <p style="padding: 20px; color: #666;">Nenhum pedido realizado ainda.</p>
+            <p class="aviso-status">Nenhum pedido realizado ainda.</p>
         {% endif %}
 
         <div class="acoes-rodape">
-            <a href="{% url 'menu_diretor' %}" class="link-voltar">← Voltar ao Menu Principal</a>
+            <a href="{% url 'menu_diretor' %}" class="link-voltar">← Voltar ao Menu</a>
             
             <a href="{% url 'criar_pedido' %}" class="btn-novo">+ Fazer Nova Solicitação</a>
         </div>

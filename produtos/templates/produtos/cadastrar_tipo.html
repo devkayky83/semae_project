@@ -26,12 +26,12 @@
                 </ul>
             </div>
             {% endif %}
-            
+
             <div class="form-layout-grid">
-                
+
                 <div class="col-principal-fields">
                     {% for field in form %}
-                    {% if field.name == 'nome' or field.name == 'tipo' or field.name == 'unidade_medida' %}
+                    {% if field.name == 'nome' or field.name == 'tipo' or field.name == 'unidade_medida' or field.name == 'origem_compra' %}
                     <div class="form-group">
                         <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
                         {{ field }}
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="col-rastreamento-button">
-                    
+
                     <div class="rastreamento-box">
                         <h2>Configurações de Rastreamento (Datas)</h2>
 
@@ -74,7 +74,7 @@
                             <small class="help-text">Desmarque se o produto não utiliza esta data.</small>
                         </div>
                     </div>
-                    
+
                     <button type="submit" class="button-cadastro">Cadastrar</button>
                 </div>
             </div>

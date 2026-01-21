@@ -1,25 +1,52 @@
 body {
-    background-color: #f4f6f9; /* Fundo levemente cinza */
+    background-color: #f4f6f9;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+span {
+    font-weight: normal;
+    opacity: 0.9;
+}
+
+span .pedido {
+    font-size: 0.9rem;
+    background: rgba(0,0,0,0.2);
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+p {
+    margin-bottom: 10px;
+    color: #555555;
+}
+
+div .pendent-panel {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.aviso {
+    margin-bottom: 10px;
+    color: #28a745
 }
 
 .container-custom {
     max-width: 1000px;
     margin: 40px auto;
-    background-color: white;
+    background-color: #ffffff;
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .page-header {
-    color: #003366; /* Azul Escuro Anglo */
+    display: flex;
+    color: #003366;
     font-weight: 700;
     margin-bottom: 30px;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
@@ -27,7 +54,7 @@ body {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     margin-bottom: 25px;
-    background-color: #fff;
+    background-color: #ffffff;
     overflow: hidden;
     transition: box-shadow 0.2s;
 }
@@ -37,8 +64,8 @@ body {
 }
 
 .card-header-compra {
-    background-color: #d9534f; /* Vermelho para destacar urgência */
-    color: white;
+    background-color: #d9534f; 
+    color: #ffffff;
     padding: 12px 20px;
     font-size: 1.05rem;
     display: flex;
@@ -58,8 +85,15 @@ body {
     border-radius: 4px;
     font-family: 'Consolas', 'Courier New', monospace;
     font-size: 1.1rem;
-    color: #333;
-    white-space: pre-wrap; /* Mantém as quebras de linha */
+    color: #333333;
+    white-space: pre-wrap;
+}
+
+.action {
+    display: flex;
+    text-align: right;
+    margin-top: 15px;
+    gap: 10px;
 }
 
 .btn-action {
@@ -75,11 +109,50 @@ body {
     transition: opacity 0.2s;
 }
 
+.btn-action.reject {
+    background-color: #dc3545; 
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.display-negar {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+}
+
 .btn-marcar {
     background-color: #28a745; 
-    color: white;
+    color: #ffffff;
 }
+
 .btn-marcar:hover { opacity: 0.9; }
+
+.confirmar-negar {
+    display: flex;
+    gap: 5px;
+}
+
+.justificativa-label {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+
+.btn-negar {
+    background-color: #dc3545; 
+    color: #ffffff;
+    border: none;
+    padding: 8px;
+}
+
+.btn-negar.cancelar {
+    background-color: #6c757d; 
+}
 
 .empty-state {
     text-align: center;

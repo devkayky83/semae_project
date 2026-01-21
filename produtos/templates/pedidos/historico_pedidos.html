@@ -25,7 +25,7 @@
                 {% for pedido in pedidos %}
                 <tr>
                     <td class="pedido-id">#{{ pedido.id }}</td>
-                    <td class="pedido-solicitante">{{ pedido.solicitante.username }}</td>
+                    <td class="pedido-solicitante">{{ pedido.solicitante.escola.nome_escola|default:pedido.solicitante.username }}</td>
                     <td class="pedido-data">{{ pedido.data_pedido|date:"d/m/Y H:i" }}</td>
                     <td class="pedido-status">
                         {% if pedido.status == 'APROVADO' %}
@@ -44,7 +44,7 @@
         </table>
 
         <div class="rodape-link">
-            <a href="{% url 'menu_nutricionista' %}" class="link-voltar">Voltar ao Menu</a>
+            <a href="{% url 'menu_nutricionista' %}" class="link-voltar">← Voltar ao Menu</a>
         </div>
     </div>
 </body>

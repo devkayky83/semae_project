@@ -1,194 +1,186 @@
 :root {
-    --azul-principal: #004d99; 
-    --azul-claro: #007bff; 
-    --fundo-principal: #EFEFEF; 
-    --info-fundo-claro: #E6F0FF; 
-    --texto-principal: #333333;
+  --azul-principal: #004d99;
+  --azul-claro: #007bff;
+  --fundo-principal: #efefef;
+  --fundo-informativo: #e6f0ff;
+  --texto-principal: #333333;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--fundo-principal); 
-    color: var(--texto-principal);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--fundo-principal);
+  color: var(--texto-principal);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.login-page-wrapper {
-    width: 90%;
-    max-width: 900px;
-    background-color: #FFFFFF;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    padding-bottom: 0;
+.envoltório-página-login {
+  width: 95%;
+  max-width: 900px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.header {
-    background-color: var(--azul-principal);
-    color: #ffffff;
+.cabeçalho {
+  background-color: var(--azul-principal);
+  color: #ffffff;
+  padding: 20px;
 }
 
-.header-content {
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    padding: 20px 10px;
+.conteúdo-cabeçalho {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
-.sje-logo {
-    max-height: 50px; 
-    width: auto;
-    margin-right: 15px; 
+.logo-sje {
+  max-height: 50px;
 }
 
-.header h1 {
-    font-size: 1.2em;
-    margin: 0; 
-    text-align: left;
+.cabeçalho h1 {
+  font-size: 1.1rem;
+  margin: 0;
 }
 
-.main-content-flex {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
-    gap: 20px;
+.conteúdo-principal-flex {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+  gap: 30px;
 }
 
-.login-box {
-    flex: 1; 
-    min-width: 300px;
-    padding: 0 30px 20px 30px;
+.caixa-login {
+  flex: 1;
+  min-width: 280px;
 }
 
-.login-box h2 {
-    color: var(--azul-principal);
-    margin-top: 0;
-    border-bottom: 2px solid var(--azul-claro);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    text-align: center;
+.caixa-login h2 {
+  color: var(--azul-principal);
+  border-bottom: 2px solid var(--azul-claro);
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
-.login-box label {
-    display: block;
-    text-align: left;
-    margin-bottom: 5px;
-    font-weight: bold;
+.campo-form {
+  margin-bottom: 20px; 
 }
 
-.login-box input[type="text"],
-.login-box input[type="password"],
-.login-box input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.campo-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
-.btn-login {
-    width: 100%;
-    background-color: var(--azul-principal);
-    color: #ffffff;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: bold;
-    transition: background-color 0.3s;
+.caixa-login input[type="text"],
+.caixa-login input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  margin-bottom: 0;
 }
 
-.btn-login:hover {
-    background-color: #0069D9; 
+.container-senha {
+  position: relative; 
+  display: flex;
+  align-items: center;
 }
 
-.error-message {
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    text-align: center;
+.container-senha input {
+  padding-right: 45px !important;
 }
 
-.info-links a {
-    color: var(--azul-principal);
-    text-decoration: none;
-    font-size: 0.9em;
-    margin-top: 15px;
-    display: block;
-    text-align: center;
+.alternar-senha {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  z-index: 10;
 }
 
-.info-box {
-    flex: 1.5;
-    min-width: 300px; 
-    background-color: var(--info-fundo-claro); 
-    color: var(--texto-principal);
-    padding: 20px 30px;
-    border-radius: 5px;
+.alternar-senha:hover {
+  color: var(--azul-claro);
 }
 
-.info-box h3 {
-    color: var(--azul-principal);
-    border-bottom: 2px solid #ffffff;
-    padding-bottom: 10px;
-    margin-top: 0;
-    font-size: 1.1em;
+.btn-acessar {
+  width: 100%;
+  background-color: var(--azul-principal);
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.info-box ul {
-    list-style-type: disc;
-    padding-left: 20px;
-    margin-top: 10px;
+.btn-acessar:hover {
+  background-color: #003366;
 }
 
-.footer-address {
-    background-color: var(--azul-principal);
-    color: #ffffff;
-    text-align: center;
-    padding: 10px 20px;
-    font-size: 0.9em;
-    border-radius: 0 0 8px 8px;
-    margin: 0 -20px -20px -20px;
-    overflow: hidden;
-    width: auto;
+.caixa-informativa {
+  flex: 1.2;
+  background-color: var(--fundo-informativo);
+  padding: 25px;
+  border-radius: 8px;
 }
 
-.footer-address p {
-    margin: 3px 0;
-    text-align: left;
+.caixa-informativa h3 {
+  margin-top: 0;
+  color: var(--azul-principal);
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 10px;
 }
 
-.address-content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 20px;
-    text-align: center;
+.rodape-endereco {
+  background-color: var(--azul-principal);
+  color: #ffffff;
+  text-align: center;
+  padding: 15px;
+  font-size: 0.85rem;
+}
+
+.rodape-endereco p {
+    margin: 4px 0;
+}
+
+.mensagem-erro {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.links-ajuda a {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: var(--azul-principal);
+  text-decoration: none;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
-    .main-content-flex {
-        flex-direction: column; 
-    }
-}
-
-@media (max-width: 550px) {
-    .header-content {
-        flex-direction: column; 
-    }
-    .sje-logo {
-        margin-right: 0;
-        margin-bottom: 5px;
-    }
-    .header h1 {
-        text-align: center;
-    }
+  .conteúdo-principal-flex {
+    flex-direction: column;
+  }
 }

@@ -5,59 +5,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compras Diretas - Secretaria</title>
-    
     <link rel="stylesheet" href="{% static 'usuarios/base.css' %}">
-    
     <link rel="stylesheet" href="{% static 'produtos/compras_diretas.css' %}"> 
 </head>
 <body>
 
     <div class="container-custom">
-        
         <div class="page-header">
-            <h2>🛒 Painel de Compras Diretas (Secretaria)</h2>
-            <a href="{% url 'root_login' %}" class="btn-action" style="background-color: #6c757d; color: white; font-size: 0.9rem;">
-                Voltar ao Menu
-            </a>
+            <h2>🛒 Painel de Compras Diretas</h2>
         </div>
 
         {% for pedido in lista %}
         <div class="card-compra">
             <div class="card-header-compra">
                 <span>
-                    <strong>Escola:</strong> {{ pedido.usuario.username }} 
-                    <span style="opacity: 0.9; font-weight: normal;">(Pedido #{{ pedido.id }})</span>
+                    <strong>Escola:</strong> {{ pedido.solicitante.escola.nome_escola|default:pedido.solicitante.username }} 
+                    <span>(Pedido #{{ pedido.id }})</span>
                 </span>
-                <span style="font-size: 0.9rem; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 15px;">
-                    📅 {{ pedido.data_criacao|date:"d/m/Y" }}
+                <span class="pedido">
+                    📅 {{ pedido.data_pedido|date:"d/m/Y" }}
                 </span>
             </div>
 
             <div class="card-body-compra">
-                <p style="color: #555; margin-bottom: 10px;">O diretor solicitou a compra direta dos seguintes itens:</p>
-                
+                <p>O diretor solicitou a compra direta dos seguintes itens:</p>
                 <div class="box-itens">{{ pedido.observacao_carne }}</div>
 
-                <hr style="margin: 20px 0; border-top: 1px solid #eee;">
-
-                <div style="text-align: right;">
-                    <a href="{% url 'marcar_carne_comprada' pedido.id %}" class="btn-action btn-marcar" onclick="return confirm('Confirmar que a compra destes itens foi realizada?');">
+                <div class="action">
+                    <a href="{% url 'marcar_carne_comprada' pedido.id %}" class="btn-action btn-marcar" 
+                       onclick="return confirm('Confirmar que a compra destes itens foi realizada?');">
                         ✅ Marcar Compra Realizada
                     </a>
+
+                    <button type="button" class="btn-action reject" 
+                            onclick="abrirFormNegar('{{ pedido.id }}')">
+                        ❌ Negar Solicitação
+                    </button>
+                </div>
+
+                <div id="form-negar-{{ pedido.id }}" class="display-negar">
+                    <form method="POST" action="{% url 'negar_compra_direta' pedido.id %}">
+                        {% csrf_token %}
+                        <label><strong>Por que esta compra não será realizada?</strong></label>
+                        <textarea name="justificativa_secretario" rows="3" class="justificativa-label" placeholder="Ex: Item não disponível ou verba insuficiente..." required></textarea>
+                        <div class="confirmar-negar">
+                            <button type="submit" class="btn-action btn-negar">Confirmar Negação</button>
+                            <button type="button" class="btn-action btn-negar cancelar" onclick="abrirFormNegar('{{ pedido.id }}')">Cancelar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="empty-state">
-            <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
-            <h3 style="color: #28a745; margin-bottom: 10px;">Tudo em dia!</h3>
+            <div class="pendent-panel">🎉</div>
+            <h3 class="aviso">Tudo em dia!</h3>
             <p>Não há solicitações de compras pendentes no momento.</p>
         </div>
         {% endfor %}
 
-        <a href="{% url 'menu_do_secretario' %}"> class="link-voltar">← Voltar ao Menu Principal</a>
-
+        <a href="{% url 'menu_secretario' %}" class="link-voltar">← Voltar ao Menu</a>
     </div>
+
+    <script>
+        function abrirFormNegar(id) {
+            const form = document.getElementById('form-negar-' + id);
+            form.style.display = (form.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
 
 </body>
 </html>

@@ -52,9 +52,9 @@ th {
 }
 
 .link-finalizar {
-  width: 100%; 
+  width: 100%;
   padding: 12px;
-  background-color: #218838; 
+  background-color: #218838;
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -70,9 +70,9 @@ th {
 }
 
 .link-pedidos {
-  width: 100%; 
+  width: 100%;
   padding: 12px;
-  background-color: #004d99; 
+  background-color: #004d99;
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -85,4 +85,50 @@ th {
 
 .link-pedidos:hover {
   background-color: #0066cc;
+}
+
+.btn-custom-modern {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-decoration: none !important;
+  color: #ffffff !important;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.btn-custom-modern:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-back-dark {
+  background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+}
+
+.btn-primary-blue {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+div .button-place {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+  gap: 20px;
+}
+
+.alert-warning {
+  color: #ffc107;
+  border-left: 5px solid;
+}
+
+.sumario {
+  color: #003366;
+  cursor: pointer;
 }

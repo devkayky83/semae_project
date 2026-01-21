@@ -28,22 +28,19 @@
                 {% endfor %}
             </ul>
         </div>
+        <form action="{% url 'aprovar_pedido' pedido.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn-aprovar">Aprovar Pedido</button>
+    </form>
     </div>
     
     <hr class="divisor-acoes">
     
     <div class="acoes-pedido">
-    
-    <form action="{% url 'aprovar_pedido' pedido.id %}" method="post" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn-aprovar">Aprovar Pedido</button>
-    </form>
-
-    <hr>
 
     <div class="area-rejeicao">
         <h3>Rejeitar Pedido</h3>
-        <p>Se for rejeitar, explique o motivo para o diretor:</p>
+        <p>Explique o motivo da rejeição:</p>
         
         <form action="{% url 'rejeitar_pedido' pedido.id %}" method="post">
             {% csrf_token %}
@@ -52,7 +49,10 @@
             <button type="submit" class="btn-rejeitar">Confirmar Rejeição</button>
         </form>
     </div>
+</div>
 
+<div class="rodape-link">
+    <a href="{% url 'listar_pedidos_pendentes' %}" class="link-voltar">← Voltar</a>
 </div>
 </body>
 </html>

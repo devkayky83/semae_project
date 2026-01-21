@@ -133,7 +133,7 @@ divisor-acoes {
     max-width: 700px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between; 
+    justify-content: center; 
     gap: 20px;
 }
 
@@ -195,6 +195,7 @@ button-aprovar {
 .rodape-link {
     text-align: center;
     margin-top: 25px;
+    margin-bottom: 65px;
 }
 
 .link-voltar {
@@ -231,10 +232,9 @@ button-aprovar {
     border-radius: 4px;
 }
 
-/* Área de Rejeição para a Nutricionista */
 .area-rejeicao {
     background-color: #fff5f5;
-    padding: 15px;
+    padding: 25px;
     border: 1px dashed #dc3545;
     border-radius: 5px;
     margin-top: 15px;
@@ -246,7 +246,7 @@ button-aprovar {
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
-    resize: vertical; /* Permite esticar a caixa */
+    resize: vertical;
 }
 
 .btn-rejeitar {
@@ -265,7 +265,7 @@ button-aprovar {
 
 .btn-aprovar {
     background-color: #28a745;
-    color: white;
+    color: #ffffff;
     border: none;
     padding: 12px 25px;
     border-radius: 4px;
@@ -277,13 +277,12 @@ button-aprovar {
 .rodape-botoes {
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 1px solid #eee; /* Linha separadora suave */
+    border-top: 1px solid #eeeeee;
 }
 
-/* O estilo do botão cinza */
 .btn-voltar {
     background-color: #6c757d;
-    color: white;
+    color: #ffffff;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
@@ -291,12 +290,12 @@ button-aprovar {
     font-family: 'Segoe UI', sans-serif;
     display: inline-flex;
     align-items: center;
-    gap: 8px; /* Espaço entre ícone e texto */
+    gap: 8px;
     transition: background-color 0.3s;
 }
 
 .btn-voltar:hover {
     background-color: #5a6268;
-    color: white;
+    color: #ffffff;
     text-decoration: none;
 }

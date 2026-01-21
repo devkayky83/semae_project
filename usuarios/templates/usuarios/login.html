@@ -8,59 +8,87 @@
 </head>
 
 <body>
-    <div class="login-page-wrapper">
-        <div class="header">
-            <div class="header-content">
-                <img src="{% static 'assets/pref_sje.jpeg' %}" alt="Prefeitura de São João Evangelista"
-                    class="sje-logo">
-
+    <div class="envoltório-página-login">
+        <div class="cabeçalho">
+            <div class="conteúdo-cabeçalho">
+                <img src="{% static 'assets/pref_sje.jpeg' %}" alt="Prefeitura de São João Evangelista" class="logo-sje">
                 <h1>SEMAE - Sistema de Estoque Municipal da Educação Escolar</h1>
             </div>
         </div>
 
-        <div class="main-content-flex">
-
-            <div class="login-box">
+        <div class="conteúdo-principal-flex">
+            <div class="caixa-login">
                 <h2>Acesso ao Sistema</h2>
 
                 {% if form.errors %}
-                <p class="error-message">Usuário e/ou senha incorretos. Por favor, tente novamente.</p>
+                <p class="mensagem-erro">Usuário e/ou senha incorretos. Por favor, tente novamente.</p>
                 {% endif %}
 
                 <form method="post">
                     {% csrf_token %}
 
-                    {{ form.as_p }}
+                    <div class="campo-form">
+                        <label for="{{ form.username.id_for_label }}">Usuário:</label>
+                        {{ form.username }}
+                    </div>
 
-                    <button type="submit" class="btn-login">Entrar</button>
+                    <div class="campo-form">
+                        <label for="{{ form.password.id_for_label }}">Senha:</label>
+                        <div class="container-senha">
+                            {{ form.password }}
+                            <button type="button" class="alternar-senha" onclick="alternarVisibilidadeSenha()">
+                                <svg id="icone-olho" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                
+                                <svg id="icone-olho-fechado" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-acessar">Entrar</button>
                 </form>
 
-                <div class="info-links">
+                <div class="links-ajuda">
                     <a href="#">Esqueceu a senha?</a>
                 </div>
             </div>
 
-            <div class="info-box">
+            <div class="caixa-informativa">
                 <h3>INFORMAÇÕES</h3>
-                <p><strong>Para acessar o SEMAE utilize as credencias fornecidas pela Secretaria de Educação.</strong>
-                </p>
+                <p><strong>Para acessar o SEMAE utilize as credencias fornecidas pela Secretaria de Educação.</strong></p>
                 <p><strong>Login:</strong></p>
                 <ul>
-                    <li><strong>Usuário: Nome de usuário fornecido pela Secretaria.</strong> </li>
+                    <li><strong>Usuário:</strong> Nome de usuário fornecido pela Secretaria.</li>
                     <li><strong>Senha:</strong> Senha fornecida pela Secretaria.</li>
                 </ul>
-                <p>Obs: Caso você não possua credenciais de acesso ou tem duvidas sobre o mesmo, entre em contato com a
-                    Secretaria.</p>
+                <p>Obs: Caso você não possua credenciais de acesso, entre em contato com a Secretaria.</p>
             </div>
         </div>
-        <div class="footer-address">
-            <div class="address-content">
+        
+        <div class="rodape-endereco">
+            <div class="conteúdo-endereco">
                 <p><strong>PREFEITURA MUNICIPAL SÃO JOÃO EVANGELISTA</strong></p>
                 <p>Rua Benedito Valdares, 40 - Centro - São João Evangelista - MG - Brasil</p>
                 <p>CEP: 39705-000</p>
             </div>
         </div>
     </div>
-</body>
 
+    <script>
+        function alternarVisibilidadeSenha() {
+            const campoSenha = document.getElementById('id_password');
+            const olhoAberto = document.getElementById('icone-olho');
+            const olhoFechado = document.getElementById('icone-olho-fechado');
+
+            if (campoSenha.type === 'password') {
+                campoSenha.type = 'text';
+                olhoAberto.style.display = 'none';
+                olhoFechado.style.display = 'block';
+            } else {
+                campoSenha.type = 'password';
+                olhoAberto.style.display = 'block';
+                olhoFechado.style.display = 'none';
+            }
+        }
+    </script>
+</body>
 </html>

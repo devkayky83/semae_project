@@ -1,46 +1,131 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
-    <title>Usuários Cadastrados</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários Cadastrados | SEMAE</title>
     <link rel="stylesheet" href="{% static 'usuarios/base.css' %}">
     <link rel="stylesheet" href="{% static 'usuarios/usuarios_lista.css' %}">
 </head>
 
 <body>
-    <div class="container">
-        <h2 class="titulo-pagina">Usuários Cadastrados</h2>
-        <a href="{% url 'criar_usuario' %}" class="link-criar">Criar novo usuário</a>
+    <div class="container-principal">
+        <header class="cabecalho-usuarios">
+            <div class="cabecalho-topo">
+                <div class="titulo-secao">
+                    <div class="icone-usuarios">👥</div>
+                    <div>
+                        <h1>Usuários Cadastrados</h1>
+                    </div>
+                </div>
+                <a href="{% url 'criar_usuario' %}" class="botao-criar">
+                    <span>➕</span>
+                    Criar Novo Usuário
+                </a>
+            </div>
+            <p class="descricao-secao">
+                Gerencie todos os usuários do sistema. Você pode adicionar, editar ou remover usuários conforme necessário.
+            </p>
+            <div class="barra-pesquisa">
+                <input type="text" placeholder="Buscar por nome ou cargo..." id="campoBusca" onkeyup="filtrarUsuarios()">
+            </div>
+        </header>
 
-        {% if usuarios %}
-        <table class="tabela-usuarios">
-            <thead>
-                <tr>
-                    <th>Nome de Usuário</th>
-                    <th>Cargo</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for u in usuarios %}
-                <tr>
-                    <td>{{ u.username }}</td>
-                    <td>{{ u.cargo }}</td>
-                    <td class="acoes">
-                        <a href="{% url 'editar_usuario' u.id %}" class="link-editar">Editar</a>
-                        <a href="{% url 'excluir_usuario' u.id %}" class="link-excluir">Excluir</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <a href="{% url 'menu_secretario' %}" class="button-sair">Voltar ao Menu</a>
-        </table>
-        {% else %}
-        <p>Nenhum usuário cadastrado.</p>
-        {% endif %}
+        <main class="conteudo-tabela">
+            {% if usuarios %}
+            <div class="informacoes-topo">
+                <div class="contador-usuarios">
+                    <span>Total de usuários:</span>
+                    <span class="badge-total">{{ usuarios|length }}</span>
+                </div>
+            </div>
+
+            <div class="tabela-wrapper">
+                <table class="tabela-usuarios" id="tabelaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>Usuário</th>
+                            <th>Cargo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in usuarios %}
+                        <tr>
+                            <td>
+                                <div class="coluna-usuario">
+                                    <div class="avatar-usuario">{{ u.username|slice:":1"|upper }}</div>
+                                    <span class="nome-usuario">{{ u.username }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge-cargo {% if u.cargo == 'Secretário' %}secretario{% elif u.cargo == 'Diretor' %}diretor{% elif u.cargo == 'Funcionário' %}funcionario{% else %}outro{% endif %}">
+                                    {{ u.cargo }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="acoes-celula">
+                                    <a href="{% url 'editar_usuario' u.id %}" class="botao-acao botao-editar">
+                                        Editar
+                                    </a>
+                                    <a href="{% url 'excluir_usuario' u.id %}" class="botao-acao botao-excluir">
+                                        Excluir
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="mensagem-vazia">
+                <div class="icone-vazio">👤</div>
+                <h3>Nenhum usuário cadastrado</h3>
+                <p>Comece criando seu primeiro usuário clicando no botão acima.</p>
+                <a href="{% url 'criar' %}" class="botao-criar">
+                    <span>➕</span>
+                    Criar Primeiro Usuário
+                </a>
+            </div>
+            {% endif %}
+
+            <footer class="rodape-tabela">
+                <a href="{% url 'menu_secretario' %}" class="botao-voltar">
+                    <span>←</span>
+                    Voltar ao Menu Principal
+                </a>
+            </footer>
+        </main>
     </div>
+
+    <script>
+        function filtrarUsuarios() {
+            const input = document.getElementById('campoBusca');
+            const filtro = input.value.toLowerCase();
+            const tabela = document.getElementById('tabelaUsuarios');
+            const linhas = tabela.getElementsByTagName('tr');
+
+            for (let i = 1; i < linhas.length; i++) {
+                const nomeUsuario = linhas[i].getElementsByClassName('nome-usuario')[0];
+                const cargo = linhas[i].getElementsByClassName('badge-cargo')[0];
+                
+                if (nomeUsuario && cargo) {
+                    const textoNome = nomeUsuario.textContent || nomeUsuario.innerText;
+                    const textoCargo = cargo.textContent || cargo.innerText;
+                    
+                    if (textoNome.toLowerCase().indexOf(filtro) > -1 || 
+                        textoCargo.toLowerCase().indexOf(filtro) > -1) {
+                        linhas[i].style.display = '';
+                    } else {
+                        linhas[i].style.display = 'none';
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

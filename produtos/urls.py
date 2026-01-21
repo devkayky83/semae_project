@@ -19,8 +19,10 @@ urlpatterns = [
     path('lotes/excluir/<int:lote_id>/', views.excluir_lote, name='excluir_lote'),
     
     #URLs para relatórios
-    path('exportar/excel/', views.exportar_excel, name='exportar_excel'),
-    path('exportar/pdf/', views.exportar_pdf, name='exportar_pdf'),
+    path('relatorios/mensal/', views.filtros_relatorio_mensal, name='filtros_relatorio_mensal'),
+    path('relatorios/mensal/gerar/', views.gerar_relatorio_mensal, name='gerar_relatorio_mensal'),
+    path('relatorios/agricultura/', views.gerar_relatorio_origem, name='gerar_relatorio_origem'),
+    path('relatorios/tipos/', views.gerar_relatorio_tipos, name='gerar_relatorio_tipos'),
 
     # URLs para pedidos de produtos
     path('pedidos/novo/', views.criar_pedido, name='criar_pedido'),
@@ -38,5 +40,6 @@ urlpatterns = [
     path('api/pedidos/pendentes/contagem/', verificar_pedidos_pendentes, name='contagem_pedidos_pendentes'),
     path('pedidos/compras-diretas/', views.lista_compras_secretario, name='lista_compras_secretario'),
     path('pedidos/<int:pedido_id>/marcar-comprado/', views.marcar_carne_comprada, name='marcar_carne_comprada'),
+    path('pedido/negar-compra/<int:pedido_id>/', views.negar_compra_direta, name='negar_compra_direta'),
 
 ]

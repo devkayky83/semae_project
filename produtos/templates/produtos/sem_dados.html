@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container text-center mt-5">
+    <div class="alert alert-warning">
+        <h3>Atenção!</h3>
+        <p>Não encontramos nenhum registro de consumo para os filtros selecionados.</p>
+        <a href="{% url 'filtros_relatorio_mensal' %}" class="btn btn-primary">Voltar aos Filtros</a>
+    </div>
+</div>
+</body>
+</html>

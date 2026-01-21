@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Relatórios | SEMAE</title>
+    <link rel="stylesheet" href="{% static 'usuarios/base.css' %}">
+    <link rel="stylesheet" href="{% static 'produtos/filtros_relatorio.css' %}">
+</head>
+
+<body>
+    <div class="container-principal">
+        <header class="cabecalho-central">
+            <div class="cabecalho-topo">
+                <div class="titulo-principal">
+                    <div class="icone-principal">📊</div>
+                    <div>
+                        <h1>Central de Relatórios</h1>
+                    </div>
+                </div>
+            </div>
+            <p class="descricao-central">
+                Gerador de relatórios ao consumo das escolas e produtos comprados.
+            </p>
+            <nav class="navegacao-tabs">
+                <button type="button" class="tab-item ativo" onclick="filtrarRelatorios('todos')">
+                    Todos <span class="badge-contagem">3</span>
+                </button>
+                <button type="button" class="tab-item" onclick="filtrarRelatorios('consumo')">
+                    Consumo <span class="badge-contagem">1</span>
+                </button>
+                <button type="button" class="tab-item" onclick="filtrarRelatorios('produtos')">
+                    Produtos <span class="badge-contagem">2</span>
+                </button>
+            </nav>
+        </header>
+
+            <div class="grade-relatorios">
+                <article class="cartao-relatorio">
+                    <header class="cabecalho-cartao">
+                        <div class="info-cartao">
+                            <span class="numero-relatorio">1</span>
+                            <h2 class="titulo-cartao">Consumo das Escolas</h2>
+                            <p class="modulo-cartao">
+                                <span class="icone-modulo">-</span>
+                                Controle de Pedidos
+                            </p>
+                        </div>
+                    </header>
+
+                    <form action="{% url 'gerar_relatorio_mensal' %}" method="GET" class="formulario-relatorio">
+                        <div class="grupo-campo">
+                            <label for="diretor">
+                                Escola (Diretor) <span class="campo-obrigatorio">*</span>
+                            </label>
+                            <select name="diretor" id="diretor" class="campo-controle">
+                                <option value="todos">Todas as Escolas</option>
+                                {% for d in diretores %}
+                                <option value="{{ d.id }}">{{ d.escola.nome_escola|default:d.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="linha-campos">
+                            <div class="grupo-campo">
+                                <label for="mes1">Mês</label>
+                                <select name="mes" id="mes1" class="campo-controle">
+                                    {% for num, nome in meses %}
+                                    <option value="{{ num }}">{{ nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="grupo-campo">
+                                <label for="ano1">Ano</label>
+                                <select name="ano" id="ano1" class="campo-controle">
+                                    {% for ano in anos %}
+                                    <option value="{{ ano }}" {% if ano == ano_atual %}selected{% endif %}>
+                                        {{ ano }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grupo-campo">
+                            <label for="formato1">Formato de Saída</label>
+                            <select name="formato" id="formato1" class="campo-controle">
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="botao-gerar">
+                            Gerar Relatório de Consumo
+                        </button>
+
+                        <div class="nota-informativa">
+                            * Este relatório calcula a porcentagem do consumo das escolas em total de pedidos.
+                        </div>
+                    </form>
+                </article>
+
+                <article class="cartao-relatorio">
+                    <header class="cabecalho-cartao">
+                        <div class="info-cartao">
+                            <span class="numero-relatorio">2</span>
+                            <h2 class="titulo-cartao">Compra de Produtos</h2>
+                            <p class="modulo-cartao">
+                                <span class="icone-modulo">-</span>
+                                Gestão de Produtos
+                            </p>
+                        </div>
+                    </header>
+
+                    <form action="{% url 'gerar_relatorio_origem' %}" method="GET" class="formulario-relatorio">
+                        <div class="linha-campos">
+                            <div class="grupo-campo">
+                                <label for="mes2">Mês</label>
+                                <select name="mes" id="mes2" class="campo-controle">
+                                    {% for num, nome in meses %}
+                                    <option value="{{ num }}">{{ nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="grupo-campo">
+                                <label for="ano2">Ano</label>
+                                <select name="ano" id="ano2" class="campo-controle">
+                                    {% for ano in anos %}
+                                    <option value="{{ ano }}" {% if ano == ano_atual %}selected{% endif %}>
+                                        {{ ano }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grupo-campo">
+                            <label for="formato2">Formato de Saída</label>
+                            <select name="formato" id="formato2" class="campo-controle">
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="botao-gerar">
+                            Gerar Relatório de Origem
+                        </button>
+
+                        <div class="nota-informativa">
+                            * Este relatório calcula a porcentagem de alimentos compra comum/agrícolas adquiridos.
+                        </div>
+                    </form>
+                </article>
+
+                <article class="cartao-relatorio">
+                    <header class="cabecalho-cartao">
+                        <div class="info-cartao">
+                            <span class="numero-relatorio">3</span>
+                            <h2 class="titulo-cartao">Tipos de Produtos</h2>
+                            <p class="modulo-cartao">
+                                <span class="icone-modulo">-</span>
+                                Gestão de Produtos
+                            </p>
+                        </div>
+                    </header>
+
+                    <form action="{% url 'gerar_relatorio_tipos' %}" method="GET" class="formulario-relatorio">
+                        <div class="linha-campos">
+                            <div class="grupo-campo">
+                                <label for="mes3">Mês</label>
+                                <select name="mes" id="mes3" class="campo-controle">
+                                    {% for num, nome in meses %}
+                                    <option value="{{ num }}">{{ nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="grupo-campo">
+                                <label for="ano3">Ano</label>
+                                <select name="ano" id="ano3" class="campo-controle">
+                                    {% for ano in anos %}
+                                    <option value="{{ ano }}" {% if ano == ano_atual %}selected{% endif %}>
+                                        {{ ano }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grupo-campo">
+                            <label for="formato3">Formato de Saída</label>
+                            <select name="formato" id="formato3" class="campo-controle">
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="botao-gerar">
+                            Gerar Relatório de Tipos
+                        </button>
+
+                        <div class="nota-informativa">
+                            * Este relatório agrupa os gastos por categoria: Alimento, Limpeza, Escolar e Outros.
+                        </div>
+                    </form>
+                </article>
+            </div>
+
+            <footer class="rodape-central">
+                <a href="{% url 'menu_secretario' %}" class="botao-voltar">
+                    <span>←</span>
+                    Voltar ao Menu Principal
+                </a>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function filtrarRelatorios(categoria) {
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => tab.classList.remove('ativo'));
+            
+            event.target.closest('.tab-item').classList.add('ativo');
+            
+            const cartoes = document.querySelectorAll('.cartao-relatorio');
+            
+            if (categoria === 'todos') {
+                cartoes.forEach(cartao => cartao.style.display = 'block');
+            } else if (categoria === 'consumo') {
+                cartoes.forEach((cartao, index) => {
+                    cartao.style.display = index === 0 ? 'block' : 'none';
+                });
+            } else if (categoria === 'produtos') {
+                cartoes.forEach((cartao, index) => {
+                    cartao.style.display = index > 0 ? 'block' : 'none';
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

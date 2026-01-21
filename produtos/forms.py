@@ -8,7 +8,8 @@ class TipoProdutoForm(forms.ModelForm):
         fields = [
             'nome', 
             'tipo', 
-            'unidade_medida', 
+            'unidade_medida',
+            'origem_compra', 
             'possui_data_fabricacao', 
             'possui_data_validade'
         ]

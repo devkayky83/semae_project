@@ -3,6 +3,7 @@ from usuarios.models import Usuario
 
 from django.db import models
 from django.db.models import Sum 
+from django.utils import timezone
 
 
 class TipoProduto(models.Model):
@@ -107,6 +108,7 @@ class Lote(models.Model):
     
     data_fabricacao = models.DateField(blank=True, null=True, verbose_name='Data de Fabricação')
     data_validade = models.DateField(blank=True, null=True, verbose_name='Data de Validade')
+    data_cadastro = models.DateField(default=timezone.now, verbose_name='Data de Entrada')
     observacoes = models.TextField(blank=True, null=True, verbose_name='Observações')
     
     @property
@@ -136,6 +138,7 @@ class Pedido(models.Model):
     data_pedido = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDENTE')
     justificativa_rejeicao = models.TextField(null=True, blank=True, verbose_name="Motivo da Rejeição")
+    justificativa_secretario = models.TextField(null=True, blank=True, verbose_name="Motivo da Rejeição")
     observacao_carne = models.TextField(blank=True, null=True, verbose_name="Solicitação de Carne/Perecíveis")
     carne_comprada = models.BooleanField(default=False, verbose_name="Compra de Carne Realizada")
 

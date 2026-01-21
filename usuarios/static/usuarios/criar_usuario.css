@@ -6,9 +6,10 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    font-family: sans-serif;
 }
 
-.form-container {
+.recipiente-formulario {
     background-color: #ffffff;
     padding: 40px;
     border-radius: 10px;
@@ -19,7 +20,7 @@ body {
     margin: 40px;
 }
 
-.form-container h2 {
+.recipiente-formulario h2 {
     text-align: center;
     color: #333333;
     margin-bottom: 30px;
@@ -27,10 +28,11 @@ body {
     padding-bottom: 15px;
 }
 
-form p {
+.grupo-formulario {
     margin-bottom: 20px;
 }
 
+.rotulo-formulario, 
 form label {
     display: block;
     margin-bottom: 8px;
@@ -41,7 +43,8 @@ form label {
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
-form select {
+form select,
+.entrada-customizada {
     width: 100%;
     padding: 12px;
     border: 1px solid #cccccc;
@@ -58,25 +61,44 @@ form select:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
 }
 
-.helptext,
-form ul {
+.texto-ajuda,
+.texto-informativo {
     font-size: 0.85em;
     color: #666666;
+    display: block;
     margin-top: 5px;
-    margin-bottom: 5px;
-    padding-left: 20px;
 }
 
-form ul li {
-    margin-bottom: 4px;
-    list-style-type: disc;
+.texto-informativo {
+    color: #444444;
 }
 
-.btn-cadastrar {
+.msg-erro {
+    color: #dc3545;
+    font-size: 0.85em;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.campo-escola-escondido {
+    display: none; 
+    background-color: #f0f9ff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #bae6fd;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.campo-escola-escondido .rotulo-formulario {
+    color: #0284c7;
+}
+
+.botao-cadastrar {
     width: 100%;
     padding: 12px;
     background-color: #28a745;
-    color: #ffffffff;
+    color: #ffffff;
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -86,7 +108,7 @@ form ul li {
     margin-top: 10px;
 }
 
-.btn-cadastrar:hover {
+.botao-cadastrar:hover {
     background-color: #218838;
 }
 
@@ -102,4 +124,16 @@ form ul li {
 .link-voltar:hover {
     color: #333333;
     text-decoration: underline;
+}
+
+
+.titulo-pagina {
+    font-size: 1.5rem;
+    word-wrap: break-word;
+}
+
+.divisor-formulario {
+    border: 0;
+    border-top: 1px solid #eeeeee;
+    margin: 20px 0;
 }

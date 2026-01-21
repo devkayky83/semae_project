@@ -1,26 +1,75 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
-    <title>Editar Usuário</title>
+    <title>Editar Usuário | SEMAE</title>
     <link rel="stylesheet" href="{% static 'usuarios/criar_usuario.css' %}">
 </head>
-<body>
 
-    <div class="form-container">
+<body>
+    <div class="recipiente-formulario">
         <h2 class="titulo-pagina">Editando: {{ usuario.username }}</h2>
 
         <form method="post">
             {% csrf_token %}
-            
-            {{ form.as_p }} 
 
-            <button type="submit" class="btn-cadastrar">Salvar Alterações</button>
+            <div class="grupo-formulario">
+                <label class="rotulo-formulario">Nome de Usuário:</label>
+                {{ form.username }}
+            </div>
+
+            <div class="grupo-formulario">
+                <label class="rotulo-formulario">E-mail:</label>
+                {{ form.email }}
+            </div>
+
+            <div class="grupo-formulario">
+                <label class="rotulo-formulario">Cargo:</label>
+                {{ form.cargo }}
+            </div>
+
+            <div id="div_nome_escola" class="campo-escola-escondido">
+                <label class="rotulo-formulario">Nome Oficial da Escola:</label>
+                {{ form.nome_escola }}
+                <small class="texto-informativo">Este nome será usado nos cabeçalhos dos relatórios oficiais.</small>
+            </div>
+
+            <hr class="divisor-formulario">
+
+            <div class="grupo-formulario">
+                <label class="rotulo-formulario">Redefinir Senha (Opcional):</label>
+                {{ form.nova_senha }}
+                <small class="texto-ajuda">Deixe vazio se não quiser alterar a senha atual.</small>
+            </div>
+
+            <button type="submit" class="botao-cadastrar">Salvar Alterações</button>
         </form>
 
-        <a href="{% url 'menu_secretario' %}" class="link-voltar">Cancelar e voltar ao menu</a>
+        <a href="{% url 'lista_usuarios' %}" class="link-voltar">← Cancelar e voltar ao menu</a>
     </div>
 
+    <script>
+        function alternarCampoEscola() {
+            const seletorCargo = document.getElementById('id_cargo');
+            const divEscola = document.getElementById('div_nome_escola');
+
+            if (seletorCargo && seletorCargo.value === 'DIRETOR') {
+                divEscola.style.display = 'block';
+            } else if (divEscola) {
+                divEscola.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const seletorCargo = document.getElementById('id_cargo');
+            if (seletorCargo) {
+                seletorCargo.addEventListener('change', alternarCampoEscola);
+            }
+            alternarCampoEscola();
+        });
+    </script>
 </body>
+
 </html>
