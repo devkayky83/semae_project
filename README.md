@@ -83,12 +83,14 @@ O sistema utiliza o padrão **MVT (Model-View-Template)** do Django:
 
 ## Estrutura do Projeto
 
+```text
 semae_project/
 ├── usuarios/       # Custom User, Perfis de Escola e Autenticação
 ├── produtos/       # Gestão de itens, Lotes e Estoque Central
 ├── pedidos/        # Fluxo de solicitação e aprovação de merenda
 ├── core/           # Configurações do projeto e URLs principais
 └── templates/      # Arquivos HTML do sistema
+```
 
 ---
 
@@ -103,7 +105,7 @@ semae_project/
 - [x] Dashboard de Consumo por Unidade
 - [x] Geração de Relatórios em PDF com cabeçalho oficial
 
---
+---
 
 ## Tecnologias Utilizadas
 
