@@ -1,10 +1,59 @@
-# Ignore virtual environment directories
+# ─── Ambiente Virtual ────────────────────────────────────────────────────────
 .venv/
-venv
+venv/
+env/
+ENV/
 
-# Ignore Python virtual environment
+# ─── Python ──────────────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyc
 
-# Ignore Local database
-db.slite3
+# ─── Banco de dados local ────────────────────────────────────────────────────
+db.sqlite3
+*.sqlite3
+
+# ─── Variáveis de ambiente e segredos ────────────────────────────────────────
+.env
+.env.*
+!.env.example          
+secret_key.txt
+secrets.json
+
+# ─── Arquivos estáticos coletados (gerado pelo collectstatic) ────────────────
+staticfiles/
+
+# ─── Uploads de usuários ─────────────────────────────────────────────────────
+media/
+
+# ─── Testes e cobertura ──────────────────────────────────────────────────────
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.tox/
+
+# ─── Empacotamento Python ────────────────────────────────────────────────────
+dist/
+build/
+*.egg-info/
+*.egg
+
+# ─── IDEs e editores ─────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── Sistema operacional ─────────────────────────────────────────────────────
+.DS_Store          # macOS
+Thumbs.db          # Windows
+desktop.ini
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+*.log
+logs/

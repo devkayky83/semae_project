@@ -61,9 +61,6 @@ class TipoProduto(models.Model):
         verbose_name='Ativo',
         help_text='Produtos inativos não aparecem para novos pedidos, mas mantêm histórico'
     )
-
-    def __str__(self):
-        return f"{self.nome} - {self.tipo}"
     
     def __str__(self):
         return f"{self.nome} ({self.get_unidade_medida_display()})"
@@ -113,8 +110,8 @@ class Lote(models.Model):
     
     @property
     def quantidade_total_unidade(self):
-        quantidade_por_pacote = self.quantidade_por_pacote if self.quantidade_por_pacote is not None else 1
-        return self.quantidade_pacotes * self.quantidade_por_pacote
+        qtd_pacote = self.quantidade_por_pacote if self.quantidade_por_pacote is not None else 1
+        return self.quantidade_pacotes * qtd_pacote
     
     def __str__(self):
             return f"Lote de {self.tipo_produto.nome} - Validade: {self.data_validade}"
