@@ -15,6 +15,7 @@ O **SEMAE** é uma plataforma simples e robusta desenvolvida para otimizar a log
 - [Roadmap](#roadmap)
 - [Tecnologias](#tecnologias-utilizadas)
 - [Instalação](#instalação)
+- [Testes](#testes)
 
 ---
 
@@ -85,11 +86,28 @@ O sistema utiliza o padrão **MVT (Model-View-Template)** do Django:
 
 ```text
 semae_project/
-├── usuarios/       # Custom User, Perfis de Escola e Autenticação
-├── produtos/       # Gestão de itens, Lotes e Estoque Central
-├── pedidos/        # Fluxo de solicitação e aprovação de merenda
-├── core/           # Configurações do projeto e URLs principais
-└── templates/      # Arquivos HTML do sistema
+├── config/              # Configurações do projeto e URLs raiz
+├── produtos/            # Estoque, lotes, pedidos e relatórios
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── forms.py
+│   ├── templates/
+│   ├── static/
+│   └── tests/
+├── usuarios/            # Autenticação, perfis e menus por cargo
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── forms.py
+│   ├── templates/
+│   ├── static/
+│   └── tests/
+├── conftest.py          # Fixtures compartilhadas de teste
+├── pytest.ini
+├── requirements.txt
+├── requirements-test.txt
+└── manage.py
 ```
 
 ---
@@ -104,6 +122,7 @@ semae_project/
 - [x] Controle por pedidos diretos de perecíveis (Proteínas e carne) pela secretaria
 - [x] Dashboard de Consumo por Unidade
 - [x] Geração de Relatórios em PDF com cabeçalho oficial
+- [x] Cobertura de testes automatizados (pytest-django)
 
 ---
 
@@ -112,8 +131,12 @@ semae_project/
 - **Python 3.12+**
 - **Django 5.0**
 - **SQLite/PostgreSQL**
+- **Matplotlib**
+- **ReportLab**
+- **OpenPyXL**
 - **Chart.js**
 - **HTML, CSS**
+- **Pytest + pytest-django**
 
 ---
 
@@ -121,20 +144,50 @@ semae_project/
 # Instalação
 
 ```bash
-# Clone o repositório
+# 1. Clone o repositório
 git clone [https://github.com/devkayky83/semae_project.git](https://github.com/devkayky83/semae_project.git)
 cd semae_project
 
-# Crie um ambiente virtual
+# 2. Crie um ambiente virtual
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 
-# Instale as dependências
+# 3. Instale as dependências
 pip install -r requirements.txt
 
-## Execute as migrações
+# 4. Execute as migrações
 python manage.py migrate
+
+# 5. Crie o primeiro usuário Secretário (administrador do sistema)
+python manage.py createsuperuser
+# Em seguida, acesse /admin e defina o campo "cargo" como SECRETARIO
 
 # Inicie o servidor
 python manage.py runserver
+
+```
+
+---
+
+# Testes
+
+```bash
+pip install -r requirements-test.txt
+
+# Todos os testes
+pytest
+
+# Com relatório de cobertura
+pytest --cov=produtos --cov=usuarios --cov-report=term-missing
+
+# Apenas um arquivo
+pytest usuarios/tests/test_views.py
+
+# Apenas uma classe
+pytest produtos/tests/test_views.py::TestAprovarPedido
+
+# Apenas um teste específico
+pytest produtos/tests/test_views.py::TestAprovarPedido::test_aprovacao_desconta_estoque_do_lote
+
+```

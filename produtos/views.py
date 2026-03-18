@@ -211,7 +211,7 @@ def baixar_estoque(request, lote_id):
             quantidade_remover = form.cleaned_data['quantidade_pacotes']
             
             if quantidade_remover > lote.quantidade_pacotes:
-                form.add_error('quantidade', "Não há unidades suficientes no estoque.")
+                form.add_error('quantidade_pacotes', "Não há unidades suficientes no estoque.")
             else:
                 lote.quantidade_pacotes -= quantidade_remover
                 lote.save()
