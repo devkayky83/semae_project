@@ -1,6 +1,6 @@
 # SEMAE - Sistema de Estoque e Materiais da Educação Escolar
 
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.12%2B-blue)](https://www.python.org/downloads/)
 [![Django Version](https://img.shields.io/badge/django-5.0%2B-092e20)](https://www.djangoproject.com/)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -135,7 +135,7 @@ semae_project/
 - **ReportLab**
 - **OpenPyXL**
 - **Chart.js**
-- **HTML, CSS**
+- **HTML, CSS, Javascript**
 - **Pydantic + pytest-django**
 
 ---
@@ -145,7 +145,7 @@ semae_project/
 
 ```bash
 # 1. Clone o repositório
-git clone [https://github.com/devkayky83/semae_project.git](https://github.com/devkayky83/semae_project.git)
+git clone [https://github.com/SEMAE-PROJECT/semae_project.git](https://github.com/SEMAE-PROJECT/semae_project.git)
 cd semae_project
 
 # 2. Crie um ambiente virtual
