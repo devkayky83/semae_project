@@ -136,7 +136,7 @@ semae_project/
 - **OpenPyXL**
 - **Chart.js**
 - **HTML, CSS**
-- **Pytest + pytest-django**
+- **Pydantic + pytest-django**
 
 ---
 
@@ -173,9 +173,10 @@ python manage.py runserver
 # Testes
 
 ```bash
+# Instale as dependências de teste
 pip install -r requirements-test.txt
 
-# Todos os testes
+# Realizar todos os testes
 pytest
 
 # Com relatório de cobertura
